@@ -3,9 +3,9 @@
 ## JBox2D (Engine) 
 It is a C++ physics engine ported to Java, It has similaire syntax. so look at the C++ documentation of the library for explanation
 
-- Code Examples
+- Code Examples (Java)
 > https://github.com/jbox2d/jbox2d/tree/master/jbox2d-testbed/src/main/java/org/jbox2d/testbed/tests
-- C++ explanation
+- C++ explanation/documentation
 > https://box2d.org/documentation/hello.htm
 
 

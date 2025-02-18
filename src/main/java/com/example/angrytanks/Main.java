@@ -9,10 +9,10 @@ import org.jbox2d.dynamics.World;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1980, 1080);
         stage.setTitle("Angry Tanks");
         stage.setScene(scene);

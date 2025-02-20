@@ -1,52 +1,43 @@
 package com.angrytanks.hud.custom;
 
-import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
-import javafx.scene.Scene;
-
-import javafx.stage.Stage;
-
 import com.angrytanks.core.GameEngine;
 import com.angrytanks.hud.GameHud;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
-
+/**
+ * Main menu UI component. Provides options like "Start Game."
+ */
 public class MainMenuComponent {
-    private Stage stage;
-    private GameEngine engine;
-    private GameHud hud;
-    private Pane root;
 
-    public MainMenuComponent(Stage stage, GameEngine engine, GameHud hud) {
-        this.stage = stage;
-        this.engine = engine;
+    private final GameHud hud;
+    private final GameEngine engine;
+    private final Pane menuPane;
+
+    public MainMenuComponent(Stage stage, GameHud hud, GameEngine engine) {
         this.hud = hud;
-        this.root = new Pane();
-        showMenu();
+        this.engine = engine;
+        this.menuPane = new Pane();
+        createMenu();
     }
 
-    public void showMenu() {
-
-
+    /**
+     * Builds the main menu UI elements.
+     */
+    private void createMenu() {
         Button startButton = new Button("Start Game");
-        Button exitButton = new Button("Exit Game");
-
-
         startButton.setLayoutX(350);
-        root.getChildren().add(startButton);
-        root.getChildren().add(exitButton);
+        // Add more UI setup as needed
+        menuPane.getChildren().add(startButton);
 
-        Scene scene = new Scene(root, 800, 600);
-        stage.setScene(scene);
-        stage.show();
-
-        //will have separate class for this ?? IDK
-        exitButton.setOnAction(e -> {
-            hideMenu();
-        });
+        startButton.setOnAction(e -> engine.startGame());
     }
 
-
-    public void hideMenu() {
-        root.getChildren().clear();
+    /**
+     * @return The Pane containing the main menu elements.
+     */
+    public Pane getMenuPane() {
+        return menuPane;
     }
 }

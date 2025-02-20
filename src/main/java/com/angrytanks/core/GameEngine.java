@@ -6,33 +6,21 @@ import javafx.stage.Stage;
 
 public class GameEngine {
 
-    private GameState gameState;
-    private boolean running;
-    private GameHud hud;
+    private final GameHud hud;
     private AnimationTimer gameLoop;
-
-
+    private boolean running;
 
     public GameEngine(Stage stage) {
-        this.gameState = new GameState();
-
-
-        // starting the shitty hud automatically calling constructing with main menu //
         this.hud = new GameHud(stage, this);
-
-        //is inside gama or still mainmenu????
         this.running = false;
     }
 
 
-
-
     public void startGame() {
+        GameState.initialize();
+        hud.showGameHUD();
 
-        // In-Game logic here, like creating the world, players, etc... //
-        // NOT USED IN MAIN MENU FOR PERFORMANCE REASONS (NOT LOADING UNNECESSARY STUFF) //
         running = true;
-
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -43,19 +31,24 @@ public class GameEngine {
         gameLoop.start();
     }
 
-    public void update() {
 
+    private void update() {
+        GameState.update();
     }
 
-    public void render() {
+    private void render() {
         hud.render();
     }
 
+
     public void stopGame() {
         running = false;
-        gameLoop.stop();
+        if (gameLoop != null) {
+            gameLoop.stop();
+        }
     }
 
-
-
+    public boolean isRunning() {
+        return running;
+    }
 }

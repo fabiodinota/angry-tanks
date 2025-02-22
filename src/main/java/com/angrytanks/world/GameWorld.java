@@ -1,5 +1,6 @@
 package com.angrytanks.world;
 
+import com.angrytanks.entity.Actor;
 import com.angrytanks.entity.custom.Tank;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,25 +9,27 @@ import java.util.List;
 public class GameWorld {
 
     private final PhysicsWorld physicsWorld;
-    private final List<Tank> objects;
-    private final List<Landscape> landscapes;
+    private final List<Actor> actors;
 
     public GameWorld() {
         this.physicsWorld = new PhysicsWorld();
-        this.objects = new ArrayList<>();
-        this.landscapes = new ArrayList<>();
+        this.actors = new ArrayList<>();
     }
 
 
-    public void addObject(Tank tank) {
-        objects.add(tank);
-        tank.addToPhysics(physicsWorld.getPhysicsWorld());
+    public void addActor(Actor actor) {
+        actors.add(actor);
+
+        if (actor instanceof Tank) {
+            ((Tank) actor).addToPhysics(physicsWorld.getPhysicsWorld());
+        } else if (actor instanceof Landscape) {
+            ((Landscape) actor).addToPhysics(physicsWorld.getPhysicsWorld());
+        }
+
     }
 
-    public void addLandscape(Landscape landscape) {
-        landscapes.add(landscape);
-        landscape.addToPhysics(physicsWorld.getPhysicsWorld());
-    }
+
+
 
     public void update() {
         physicsWorld.update();
@@ -36,11 +39,7 @@ public class GameWorld {
         return physicsWorld;
     }
 
-    public List<Tank> getObjects() {
-        return objects;
-    }
-
-    public List<Landscape> getLandscapes() {
-        return landscapes;
+    public List<Actor> getAllActors() {
+        return actors;
     }
 }

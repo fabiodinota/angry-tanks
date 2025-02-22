@@ -27,9 +27,9 @@ public class Landscape extends Actor {
 
 
     public void addToPhysics(World jbox2dWorld) {
-
         float halfWidth = (float) (groundVisual.getWidth() / 2.0 / 10.0);
-        float halfThickness = (float) (groundVisual.getHeight() / 2.0 / 10.0);
+        float halfHeight = (float) (groundVisual.getHeight() / 2.0 / 10.0);
+
 
         float centerX = (float) ((position.getX() + groundVisual.getWidth() / 2.0) / 10.0);
         float centerY = (float) ((position.getY() + groundVisual.getHeight() / 2.0) / 10.0);
@@ -40,11 +40,11 @@ public class Landscape extends Actor {
         physicsBody = jbox2dWorld.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(halfWidth, halfThickness);
+        shape.setAsBox(halfWidth, halfHeight);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.0f;
+        fixtureDef.density = 0.0f; // static ?? ?
         fixtureDef.friction = 0.9f;
         physicsBody.createFixture(fixtureDef);
     }

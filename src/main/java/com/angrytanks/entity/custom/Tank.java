@@ -38,14 +38,14 @@ public class Tank extends Actor {
     }
 
     public void addToPhysics(World physicsWorld) {
-
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set((float) position.getX() / 10, (float) position.getY() / 10);
+        bodyDef.position.set((float)(position.getX() / 10.0), (float)(position.getY() / 10.0));
         bodyDef.type = BodyType.DYNAMIC;
         physicsBody = physicsWorld.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(3f, 3f);
+
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1.0f;
@@ -55,7 +55,7 @@ public class Tank extends Actor {
 
     @Override
     public void render() {
-        if (physicsBody != null && tankImage != null) {
+        if (physicsBody != null && tankImage != null ) {
             float xPos = physicsBody.getPosition().x * 10;
             float yPos = physicsBody.getPosition().y * 10;
             tankImage.setX(xPos);
@@ -66,7 +66,6 @@ public class Tank extends Actor {
 
     @Override
     public void setPosition(Point2D newPos) {
-        //overide super class bs
         super.setPosition(newPos);
 
         tankImage.setX(newPos.getX());

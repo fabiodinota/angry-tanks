@@ -6,7 +6,7 @@ import com.angrytanks.world.Landscape;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
+import com.angrytanks.entity.Actor;
 
 public class InGameHud {
 
@@ -21,13 +21,12 @@ public class InGameHud {
 
     public void showGameHUD() {
         GameState.setupPlayers(2);
-        for (Landscape landscape : GameState.world.getLandscapes()) {
-            hudPane.getChildren().add(landscape.getVisuals());
+
+
+        for (Actor actor : GameState.world.getAllActors()) {
+            hudPane.getChildren().add(actor.getVisuals());
         }
 
-        for (Tank tank : GameState.players) {
-            hudPane.getChildren().add(tank.getVisuals());
-        }
 
 
         Button getPosition = new Button("Get Position");
@@ -57,8 +56,8 @@ public class InGameHud {
 
 
     public void render() {
-        for (Tank tank : GameState.players) {
-            tank.render();
+        for (Actor actor : GameState.world.getAllActors()) {
+            actor.render();
         }
     }
 

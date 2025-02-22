@@ -20,7 +20,7 @@ public class GameState {
         if (world == null) {
             world = new GameWorld();
             Landscape ground = new Landscape(0, 550, 800, 50);
-            world.addLandscape(ground);
+            world.addActor(ground);
         }
         players.clear();
         gameOver = false;
@@ -31,7 +31,6 @@ public class GameState {
         players.clear();
         double spacing = 150;
         double startX = 10;
-
         for (int i = 0; i < numPlayers; i++) {
             double xPosition = startX + (i * spacing);
             Tank tank = new Tank(xPosition, 100);
@@ -42,11 +41,8 @@ public class GameState {
 
     public static void addPlayer(Tank tank) {
         players.add(tank);
-        if (world != null) {
-            world.addObject(tank);
-        }
+        world.addActor(tank);
     }
-
 
 
     public static void update() {

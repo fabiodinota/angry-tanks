@@ -25,7 +25,7 @@ public class GameHud {
 
 
     public void showMainMenu() {
-        menu = new MainMenuComponent(stage, this, engine);
+        this.menu = new MainMenuComponent(stage, this, engine);
         Scene menuScene = new Scene(menu.getMenuPane(), 800, 600);
         stage.setScene(menuScene);
         stage.show();

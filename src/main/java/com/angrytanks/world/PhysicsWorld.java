@@ -15,7 +15,7 @@ public class PhysicsWorld {
 
 
     public void update() {
-        physicsWorld.step(1 / 60f, 6, 2);
+        physicsWorld.step(1 / 60f, 8, 3);
     }
 
 

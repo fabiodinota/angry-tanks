@@ -2,6 +2,7 @@ package com.angrytanks.entity;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import org.jbox2d.dynamics.World;
 
 
 public abstract class Actor {
@@ -28,4 +29,6 @@ public abstract class Actor {
     }
 
     public abstract void render();
+
+    public abstract void  addToPhysics(World physicsWorld);
 }

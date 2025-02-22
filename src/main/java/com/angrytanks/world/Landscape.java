@@ -44,7 +44,7 @@ public class Landscape extends Actor {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.0f; // static ?? ?
+        fixtureDef.density = 0.0f; // static
         fixtureDef.friction = 0.9f;
         physicsBody.createFixture(fixtureDef);
     }

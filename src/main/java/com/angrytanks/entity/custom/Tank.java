@@ -1,6 +1,7 @@
 package com.angrytanks.entity.custom;
 
 import com.angrytanks.entity.Actor;
+import com.angrytanks.util.Constant;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,25 +27,15 @@ public class Tank extends Actor {
         this.visuals.getChildren().add(tankImage);
     }
 
-    public void teleport(double newX, double newY) {
-        setPosition(new Point2D(newX, newY));
-
-        if (physicsBody != null) {
-            physicsBody.setTransform(
-                    new org.jbox2d.common.Vec2((float) (newX / 10.0), (float) (newY / 10.0)),
-                    physicsBody.getAngle()
-            );
-        }
-    }
 
     public void addToPhysics(World physicsWorld) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set((float)(position.getX() / 10.0), (float)(position.getY() / 10.0));
+        bodyDef.position.set((float)(position.getX() / Constant.SCALE), (float)(position.getY() / Constant.SCALE));
         bodyDef.type = BodyType.DYNAMIC;
         physicsBody = physicsWorld.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(3f, 3f);
+        shape.setAsBox(3f, 2f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -56,14 +47,25 @@ public class Tank extends Actor {
     @Override
     public void render() {
         if (physicsBody != null && tankImage != null ) {
-            float xPos = physicsBody.getPosition().x * 10;
-            float yPos = physicsBody.getPosition().y * 10;
+            float xPos = (float) (physicsBody.getPosition().x * Constant.SCALE);
+            float yPos = (float) (physicsBody.getPosition().y * Constant.SCALE);
             tankImage.setX(xPos);
             tankImage.setY(yPos);
             setPosition(new Point2D(xPos, yPos));
         }
     }
 
+    @Override
+    public void teleport(double newX, double newY) {
+        setPosition(new Point2D(newX, newY));
+
+        if (physicsBody != null) {
+            physicsBody.setTransform(
+                    new org.jbox2d.common.Vec2((float) (newX / Constant.SCALE), (float) (newY / Constant.SCALE)),
+                    physicsBody.getAngle()
+            );
+        }
+    }
     @Override
     public void setPosition(Point2D newPos) {
         super.setPosition(newPos);
@@ -73,7 +75,7 @@ public class Tank extends Actor {
 
         if (physicsBody != null) {
             physicsBody.setTransform(
-                    new Vec2((float) (newPos.getX() / 10.0), (float) (newPos.getY() / 10.0)),
+                    new Vec2((float) (newPos.getX() / Constant.SCALE), (float) (newPos.getY() / Constant.SCALE)),
                     physicsBody.getAngle()
             );
 

@@ -34,6 +34,10 @@ public class GameWorld {
         */
     }
 
+    public void clearActors() {
+        actors.clear();
+    }
+
 
 
 

@@ -3,6 +3,7 @@ module com.example.angrytanks {
     requires javafx.fxml;
     requires jbox2d.library;
     requires java.desktop;
+    requires org.locationtech.jts;
 
 
     opens com.angrytanks to javafx.fxml;

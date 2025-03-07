@@ -6,6 +6,7 @@ import com.angrytanks.hud.custom.MainMenuComponent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 public class GameHud {
@@ -20,13 +21,14 @@ public class GameHud {
         this.stage = stage;
         this.engine = engine;
         this.rootPane = new Pane();
+        stage.initStyle(StageStyle.UNDECORATED);
         showMainMenu();
     }
 
 
     public void showMainMenu() {
         this.menu = new MainMenuComponent(stage, this, engine);
-        Scene menuScene = new Scene(menu.getMenuPane(), 800, 600);
+        Scene menuScene = new Scene(menu.getMenuPane(), 1920 , 1080);
         stage.setScene(menuScene);
         stage.show();
     }
@@ -34,7 +36,7 @@ public class GameHud {
 
     public void showGameHUD() {
         inGameHud = new InGameHud(stage);
-        Scene gameScene = new Scene(inGameHud.getHudPane(), 800, 600);
+        Scene gameScene = new Scene(inGameHud.getHudPane(), 1920 , 1080);
         stage.setScene(gameScene);
         stage.show();
 

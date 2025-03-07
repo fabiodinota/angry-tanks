@@ -1,0 +1,100 @@
+package com.angrytanks.util;
+
+import com.angrytanks.entity.Actor;
+import com.angrytanks.entity.custom.Projectile;
+import com.angrytanks.terrain.DestructibleTerrain;
+import com.angrytanks.world.PhysicsWorld;
+import javafx.geometry.Point2D;
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.collision.Manifold;
+import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.contacts.Contact;
+import org.jbox2d.dynamics.World;
+
+public class MyContactListener implements ContactListener {
+
+    @Override
+    public void beginContact(Contact contact) {
+        Actor aA = extractActor(contact.getFixtureA());
+        Actor aB = extractActor(contact.getFixtureB());
+
+        if (aA == null || aB == null) {
+            System.out.println("[ContactListener] One fixture has no Actor userData. Skipping...");
+            return;
+        }
+
+        boolean isProjA = (aA instanceof Projectile);
+        boolean isProjB = (aB instanceof Projectile);
+        boolean isTerrainA = (aA instanceof DestructibleTerrain);
+        boolean isTerrainB = (aB instanceof DestructibleTerrain);
+
+        System.out.println("[ContactListener] isProjA=" + isProjA + ", isTerrainA=" + isTerrainA +
+                ", isProjB=" + isProjB + ", isTerrainB=" + isTerrainB);
+
+        if (isProjA && isTerrainB) {
+            Projectile proj = (Projectile) aA;
+            Actor ground = aB;
+            PhysicsWorld.scheduleAction(() -> handleHit(proj, ground));
+        } else if (isProjB && isTerrainA) {
+            Projectile proj = (Projectile) aB;
+            Actor ground = aA;
+            PhysicsWorld.scheduleAction(() -> handleHit(proj, ground));
+        }
+    }
+
+    @Override public void endContact(Contact contact) { }
+
+    @Override public void preSolve(Contact contact, Manifold oldManifold) { }
+
+    @Override public void postSolve(Contact contact, ContactImpulse impulse) { }
+
+    private void handleHit(Projectile proj, Actor groundActor) {
+        Point2D impact = proj.getPosition();
+        System.out.println("hit at: " + impact);
+
+        if (proj.physicsBody != null && proj.physicsBody.isActive()) {
+            System.out.println("destroy.");
+            proj.physicsBody.getWorld().destroyBody(proj.physicsBody);
+            proj.physicsBody = null;
+        }
+
+
+
+        if (groundActor instanceof DestructibleTerrain) {
+            DestructibleTerrain terrain = (DestructibleTerrain) groundActor;
+            CraterParameters params = terrain.getCraterParameters();
+
+            System.out.println(terrain.getClass().getSimpleName());
+            System.out.println(terrain.getVertices().size());
+
+            var newPolys = DestructionHelper.subtractEllipseFromPolygon(
+                    terrain.getVertices(), impact,
+                    params.getRadiusX(), params.getRadiusY(),
+                    params.getRotation(), params.getEllipseVertices());
+            System.out.println("new polygon" + newPolys.size());
+
+            if (!newPolys.isEmpty()) {
+                terrain.setVertices(newPolys.get(0));
+                System.out.println("new vertex: " + terrain.getVertices().size());
+                World world = PhysicsWorld.getPhysicsWorld();
+                if (world != null) {
+                    terrain.rebuild(world);
+                    System.out.println("rebuilt.");
+                } else {
+                    System.out.println("world null.");
+                }
+            } else {
+                System.out.println("1");
+            }
+        } else {
+            System.out.println("caannot destroy");
+        }
+    }
+
+    private Actor extractActor(Fixture fix) {
+        if (fix == null) return null;
+        Object ud = fix.getBody().getUserData();
+        return (ud instanceof Actor) ? (Actor) ud : null;
+    }
+}

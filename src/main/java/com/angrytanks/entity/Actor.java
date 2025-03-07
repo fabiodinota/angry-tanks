@@ -31,4 +31,5 @@ public abstract class Actor {
     public abstract void render();
 
     public abstract void  addToPhysics(World physicsWorld);
+    public abstract void teleport(double newX, double newY);
 }

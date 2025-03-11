@@ -2,7 +2,7 @@ package com.angrytanks.core;
 
 import com.angrytanks.hud.GameHud;
 import javafx.animation.AnimationTimer;
-import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
 
 public class GameEngine {
 
@@ -10,15 +10,16 @@ public class GameEngine {
     private AnimationTimer gameLoop;
     private boolean running;
 
-    public GameEngine(Stage stage) {
-        this.hud = new GameHud(stage, this);
+    public GameEngine() {
+        this.hud = new GameHud(this);
         this.running = false;
     }
 
-    //test
-    public void startGame() {
+    public void startGame(Pane parentPane) {
         GameState.initialize();
+
         hud.showGameHUD();
+        parentPane.getChildren().add(hud.getRootPane());
 
         running = true;
         gameLoop = new AnimationTimer() {
@@ -31,7 +32,6 @@ public class GameEngine {
         gameLoop.start();
     }
 
-
     private void update() {
         GameState.update();
     }
@@ -40,6 +40,9 @@ public class GameEngine {
         hud.render();
     }
 
+    public Pane getRootPane() {
+        return hud.getRootPane();
+    }
 
     public void stopGame() {
         running = false;
@@ -51,4 +54,5 @@ public class GameEngine {
     public boolean isRunning() {
         return running;
     }
+
 }

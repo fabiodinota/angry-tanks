@@ -3,6 +3,7 @@ package com.angrytanks.hud.custom.InGame;
 import com.angrytanks.core.GameState;
 import com.angrytanks.entity.custom.Tank;
 import com.angrytanks.util.Decomposable;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
@@ -14,13 +15,12 @@ import com.angrytanks.entity.Actor;
 import java.io.InputStream;
 
 public class InGameHud {
-
-    private final Stage stage;
     private final Pane hudPane;
+    private Canvas canvas;
 
-    public InGameHud(Stage stage) {
-        this.stage = stage;
+    public InGameHud() {
         this.hudPane = new Pane();
+        canvas = new Canvas(800, 600);
     }
 
 
@@ -150,6 +150,10 @@ public class InGameHud {
         for (Actor actor : GameState.world.getAllActors()) {
             actor.render();
         }
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
     }
 
     public Pane getHudPane() {

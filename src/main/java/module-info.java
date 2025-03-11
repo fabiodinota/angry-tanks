@@ -6,6 +6,6 @@ module com.example.angrytanks {
     requires org.locationtech.jts;
 
 
-    opens com.angrytanks to javafx.fxml;
+    opens com.angrytanks.ui.controllers to javafx.fxml;
     exports com.angrytanks;
 }

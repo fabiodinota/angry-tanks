@@ -1,21 +1,18 @@
 package com.angrytanks;
 
 import com.angrytanks.core.GameEngine;
+import com.angrytanks.ui.SceneManager;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.World;
-
-import java.io.IOException;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException {
-        GameEngine engine = new GameEngine(stage);
+    public void start(Stage stage) {
+        GameEngine engine = new GameEngine();
 
+        SceneManager sceneManager = new SceneManager(stage);
+        sceneManager.showMainMenu();
     }
 
     public static void main(String[] args) {

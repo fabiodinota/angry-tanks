@@ -1,3 +1,4 @@
+/*
 package com.angrytanks.hud.custom;
 
 import com.angrytanks.core.GameEngine;
@@ -36,3 +37,4 @@ public class MainMenuComponent {
         return menuPane;
     }
 }
+*/

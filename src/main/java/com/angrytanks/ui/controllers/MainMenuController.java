@@ -8,18 +8,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 public class MainMenuController {
 
     @FXML
-    private BorderPane borderPane;
+    private StackPane stackPane;
     @FXML
     private ImageView backgroundImage;
-    @FXML
-    private VBox mainBox;
     @FXML
     private VBox menuBox;
     @FXML
@@ -60,10 +58,12 @@ public class MainMenuController {
         exitButton.setFocusTraversable(true);
 
         // Optional: Start focused on the first button
-        playButton.requestFocus();
+        stackPane.requestFocus();
+
+        focusButton(0);
 
         // Listen for arrow key presses on the root (or scene)
-        menuBox.setOnKeyPressed(this::handleKeyPress);
+        stackPane.setOnKeyPressed(this::handleKeyPress);
 
         // Add mouse click handlers
         playButton.setOnAction(event -> onPlayClicked());
@@ -87,35 +87,36 @@ public class MainMenuController {
     }
 
     private void focusButton(int newIndex) {
-        // Remove "> " from the previously focused button (if any)
+        // Remove "> " from the previously focused button
         if (previousIndex >= 0 && previousIndex < menuBox.getChildren().size()) {
             Node oldNode = menuBox.getChildren().get(previousIndex);
             if (oldNode instanceof Button) {
                 Button oldButton = (Button) oldNode;
                 String oldText = oldButton.getText();
-                // If it starts with "> ", strip that off
                 if (oldText.startsWith("> ")) {
                     oldButton.setText(oldText.substring(2));
                 }
             }
         }
 
-        // Update current index
+        // Update the indexes
         currentIndex = newIndex;
         previousIndex = newIndex;
 
-        // Focus and add "> " to the newly focused button
-        Node node = menuBox.getChildren().get(newIndex);
-        if (node instanceof Button) {
-            node.requestFocus();
-            Button newButton = (Button) node;
+        // Retrieve the new node
+        Node newNode = menuBox.getChildren().get(newIndex);
+        if (newNode instanceof Button) {
+            // DO NOT requestFocus() here if you want the arrow keys
+            // to remain with the parent container
+            Button newButton = (Button) newNode;
             String newText = newButton.getText();
-            // Avoid double-adding "> "
             if (!newText.startsWith("> ")) {
                 newButton.setText("> " + newText);
             }
         }
     }
+
+
 
     @FXML
     private void onPlayClicked() {

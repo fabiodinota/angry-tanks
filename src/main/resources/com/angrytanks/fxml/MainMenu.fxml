@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="root"
+<StackPane fx:id="stackPane"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.angrytanks.ui.controllers.MainMenuController"
            prefWidth="800" prefHeight="600">

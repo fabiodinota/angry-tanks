@@ -29,8 +29,7 @@ public class MyContactListener implements ContactListener {
         boolean isTerrainA = (aA instanceof DestructibleTerrain);
         boolean isTerrainB = (aB instanceof DestructibleTerrain);
 
-        System.out.println("[ContactListener] isProjA=" + isProjA + ", isTerrainA=" + isTerrainA +
-                ", isProjB=" + isProjB + ", isTerrainB=" + isTerrainB);
+
 
         if (isProjA && isTerrainB) {
             Projectile proj = (Projectile) aA;
@@ -51,10 +50,8 @@ public class MyContactListener implements ContactListener {
 
     private void handleHit(Projectile proj, Actor groundActor) {
         Point2D impact = proj.getPosition();
-        System.out.println("hit at: " + impact);
 
         if (proj.physicsBody != null && proj.physicsBody.isActive()) {
-            System.out.println("destroy.");
             proj.physicsBody.getWorld().destroyBody(proj.physicsBody);
             proj.physicsBody = null;
         }
@@ -72,23 +69,18 @@ public class MyContactListener implements ContactListener {
                     terrain.getVertices(), impact,
                     params.getRadiusX(), params.getRadiusY(),
                     params.getRotation(), params.getEllipseVertices());
-            System.out.println("new polygon" + newPolys.size());
 
             if (!newPolys.isEmpty()) {
                 terrain.setVertices(newPolys.get(0));
-                System.out.println("new vertex: " + terrain.getVertices().size());
                 World world = PhysicsWorld.getPhysicsWorld();
                 if (world != null) {
                     terrain.rebuild(world);
-                    System.out.println("rebuilt.");
                 } else {
-                    System.out.println("world null.");
                 }
             } else {
                 System.out.println("1");
             }
         } else {
-            System.out.println("caannot destroy");
         }
     }
 

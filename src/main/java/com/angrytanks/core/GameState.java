@@ -1,7 +1,9 @@
 package com.angrytanks.core;
 
 import com.angrytanks.entity.custom.Projectile;
-import com.angrytanks.entity.custom.Tank;
+import com.angrytanks.entity.custom.tank.Tank;
+import com.angrytanks.entity.custom.tank.components.TankData;
+import com.angrytanks.util.SVGTankLoader;
 import com.angrytanks.world.GameWorld;
 import com.angrytanks.world.MapLayout;
 
@@ -24,7 +26,7 @@ public class GameState {
 
         mapLayout = new MapLayout();
 
-        mapLayout.loadFromSVG("/maps/map2.svg");
+        mapLayout.loadFromSVG("/maps/test1.svg");
 
 
 
@@ -40,12 +42,13 @@ public class GameState {
 
     public static void setupPlayers(int numPlayers) {
         players.clear();
-        double spacing = 150;
-        double startX = 800;
+
         for (int i = 0; i < numPlayers; i++) {
-            double xPosition = startX + (i * spacing);
-            Tank tank = new Tank(xPosition, 20);
-           Projectile projectile = new Projectile(800, 100);
+            TankData data = SVGTankLoader.loadTankData("/tanks/tank1.svg");
+            Tank tank = new Tank(data, 500.0, 200.0);
+
+
+            Projectile projectile = new Projectile(1700, 100);
 //            Projectile projectile1 = new Projectile(xPosition, 200);
 //            Projectile projectile2 = new Projectile(xPosition, 400);
 //            Projectile projectile3 = new Projectile(xPosition, 300);

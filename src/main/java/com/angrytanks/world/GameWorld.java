@@ -1,7 +1,7 @@
 package com.angrytanks.world;
 
 import com.angrytanks.entity.Actor;
-import com.angrytanks.entity.custom.Tank;
+
 import java.util.ArrayList;
 import java.util.List;
 

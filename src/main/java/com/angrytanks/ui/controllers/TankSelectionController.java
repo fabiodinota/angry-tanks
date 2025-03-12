@@ -21,9 +21,15 @@ public class TankSelectionController {
         String username = nameField.getText();
         System.out.println("Name chosen: " + username);
 
-        if (sceneManager != null) {
+
+
+        if (sceneManager != null && !username.isEmpty()) {
             sceneManager.showGameScene();
+
         }
+
+
+
     }
 
     @FXML

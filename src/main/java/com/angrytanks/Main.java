@@ -9,8 +9,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        GameEngine engine = new GameEngine();
-
         SceneManager sceneManager = new SceneManager(stage);
         sceneManager.showMainMenu();
     }

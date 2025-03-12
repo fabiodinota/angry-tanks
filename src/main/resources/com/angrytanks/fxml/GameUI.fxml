@@ -11,6 +11,6 @@
     <AnchorPane fx:id="gameContainer"
                 prefWidth="800" prefHeight="600" />
 
-    <Label text="Game UI - The actual gameplay here" layoutX="280" layoutY="20"/>
-    <Button text="End Game (Mock)" layoutX="350" layoutY="550" onAction="#onEndGameClicked"/>
+<!--    <Label text="Game UI - The actual gameplay here" layoutX="280" layoutY="20"/>-->
+<!--    <Button text="End Game (Mock)" layoutX="350" layoutY="550" onAction="#onEndGameClicked"/>-->
 </AnchorPane>

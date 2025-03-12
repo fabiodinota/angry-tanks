@@ -21,8 +21,7 @@ public class GameUIController {
 
     @FXML
     private void initialize() {
-        gameEngine = new GameEngine();
-        gameEngine.startGame(gameContainer);
+
     }
 
     @FXML
@@ -38,5 +37,10 @@ public class GameUIController {
     public void setSceneManager(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
     }
-
+    public void startEngine() {
+        if (gameEngine == null) {
+            gameEngine = new GameEngine();
+            gameEngine.startGame(gameContainer);
+        }
+    }
 }

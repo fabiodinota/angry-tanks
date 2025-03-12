@@ -53,7 +53,7 @@ public class SceneManager {
             Parent gameUIRoot = gameUILoader.load();
             gameUIController = gameUILoader.getController();
             gameUIController.setSceneManager(this);
-            gameScene = new Scene(gameUIRoot, 800, 600);
+            gameScene = new Scene(gameUIRoot, 1980, 1080);
 
             // Win/Lose
             FXMLLoader winLoseLoader = new FXMLLoader(getClass().getResource("/com/angrytanks/fxml/WinLose.fxml"));
@@ -96,6 +96,10 @@ public class SceneManager {
     public void showGameScene() {
         primaryStage.setTitle("Angry Tanks - In Game");
         primaryStage.setScene(gameScene);
+
+        gameUIController.startEngine();
+
+
         primaryStage.show();
     }
 

@@ -1,7 +1,7 @@
 package com.angrytanks.hud.custom.InGame;
 
 import com.angrytanks.core.GameState;
-import com.angrytanks.entity.custom.Tank;
+import com.angrytanks.entity.custom.tank.Tank;
 import com.angrytanks.util.Decomposable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -9,7 +9,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import com.angrytanks.entity.Actor;
 
 import java.io.InputStream;
@@ -28,8 +27,7 @@ public class InGameHud {
         GameState.setupPlayers(1);
 
 
-        //please not hate i will change it later
-        //used to get the background image from the map layout
+
         String bgFile = GameState.getMapLayout().getBackgroundName();
         if (bgFile != null && !bgFile.isEmpty()) {
             System.out.println("Loading background image: " + bgFile);
@@ -48,7 +46,7 @@ public class InGameHud {
                 System.err.println("Background image not found at: " + resourcePath);
             }
         }
-        //please not hate i will change it later
+
 
 
 

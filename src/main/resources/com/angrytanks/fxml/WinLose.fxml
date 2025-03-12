@@ -6,7 +6,7 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.angrytanks.ui.controllers.WinLoseController"
-            prefWidth="600" prefHeight="400">
+            prefWidth="800" prefHeight="600">
     <Label fx:id="resultLabel" text="You Win or Lose" layoutX="220" layoutY="150"/>
     <Button text="Play Again" layoutX="200" layoutY="200" onAction="#onPlayAgainClicked"/>
     <Button text="Exit to Menu" layoutX="300" layoutY="200" onAction="#onExitToMenuClicked"/>

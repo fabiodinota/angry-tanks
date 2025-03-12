@@ -1,0 +1,38 @@
+/* 8-bit style font recommended, e.g. "Press Start 2P" from Google Fonts */
+
+.font {
+    -fx-font-family: "Press Start 2P Regular";
+}
+
+.title-label {
+    -fx-font-family: "Press Start 2P Regular";
+    -fx-font-size: 50px;
+    -fx-text-fill: #FFFFFF;
+    -fx-alignment: center;
+    /* Optional drop shadow for extra retro vibe */
+    -fx-effect: dropshadow(gaussian, black, 4, 0.8, 2, 2);
+}
+
+.menu-button {
+    -fx-font-family: "Press Start 2P Regular";
+    -fx-font-size: 32px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, black, 4, 0.8, 2, 2);
+
+}
+
+
+/* Hover effect for buttons */
+.menu-button:hover {
+    -fx-text-fill: #000000;
+}
+
+/* Focused button outline, to help with arrow key navigation */
+.menu-button:focused {
+    -fx-text-fill: #000000;
+}

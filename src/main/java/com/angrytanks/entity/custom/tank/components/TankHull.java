@@ -1,10 +1,11 @@
 package com.angrytanks.entity.custom.tank.components;
 
-
 import com.angrytanks.entity.Actor;
 import com.angrytanks.util.Constant;
 import com.angrytanks.util.ConvexDecomposer;
 import com.angrytanks.util.Decomposable;
+import com.angrytanks.util.PolygonUtil;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -14,13 +15,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-
-import com.angrytanks.util.PolygonUtil;
-
-
 
 public class TankHull extends Actor implements Decomposable {
 
@@ -31,51 +26,40 @@ public class TankHull extends Actor implements Decomposable {
     private final Group subPolysGroup;
     private boolean showingOutline = false;
 
+
     public TankHull(List<Point2D> hullVertices, Color fill) {
-
-        super(hullVertices.isEmpty() ? 0 : hullVertices.get(0).getX(),
-                hullVertices.isEmpty() ? 0 : hullVertices.get(0).getY());
-
+        super(0, 0);
         this.hullVertices = new ArrayList<>(hullVertices);
-
-
         PolygonUtil.ensureClockwiseOrder(this.hullVertices);
-
         convexParts = ConvexDecomposer.decompose(this.hullVertices);
         if (convexParts.isEmpty()) {
             convexParts.add(new ArrayList<>(this.hullVertices));
         }
-        System.out.println("[TankHull] Convex parts count: " + convexParts.size());
-        for (List<Point2D> part : convexParts) {
-            System.out.println("[TankHull] Part vertices count: " + part.size());
-        }
-
         mergedVisualPolygon = new Polygon();
         for (Point2D pt : this.hullVertices) {
             mergedVisualPolygon.getPoints().addAll(pt.getX(), pt.getY());
         }
         mergedVisualPolygon.setFill(fill != null ? fill : Color.GRAY);
-
+        mergedVisualPolygon.setLayoutX(0);
+        mergedVisualPolygon.setLayoutY(0);
         subPolysGroup = new Group();
-
         visuals.getChildren().add(mergedVisualPolygon);
     }
 
     @Override
     public void addToPhysics(World physicsWorld) {
         if (hullVertices.size() < 3) {
-            System.err.println("no vertices.");
+            System.err.println("TankHull: Not enough vertices to form a polygon.");
             return;
         }
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
-        bd.position.set((float)(position.getX() / Constant.SCALE),
-                (float)(position.getY() / Constant.SCALE));
+        bd.bullet = true;
+        bd.position.set((float)(getPosition().getX() / Constant.SCALE),
+                (float)(getPosition().getY() / Constant.SCALE));
         physicsBody = physicsWorld.createBody(bd);
         physicsBody.setUserData(this);
 
-        // For each convex part, create a fixture.
-        // Note: Box2D supports up to 8 vertices per fixture. If needed, further decomposition/simplification is required.
         for (List<Point2D> part : convexParts) {
             int count = Math.min(part.size(), 8);
             Vec2[] vecs = new Vec2[count];
@@ -85,19 +69,35 @@ public class TankHull extends Actor implements Decomposable {
                         (float)(p.getY() / Constant.SCALE));
             }
             PolygonShape shape = new PolygonShape();
-            try {
-                shape.set(vecs, count);
-            } catch (ArrayIndexOutOfBoundsException e) {
-
-                e.printStackTrace();
-            }
-
+            shape.set(vecs, count);
             FixtureDef fd = new FixtureDef();
             fd.shape = shape;
             fd.density = 1.0f;
-            fd.friction = 0.3f;
+            fd.friction = 0.5f;
             physicsBody.createFixture(fd);
         }
+    }
+
+    public double getHullWidth() {
+        double minX = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE;
+        for (Point2D vertex : hullVertices) {
+            double x = vertex.getX();
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+        }
+        return maxX - minX;
+    }
+
+    public double getHullHeight() {
+        double minY = Double.MAX_VALUE;
+        double maxY = Double.MIN_VALUE;
+        for (Point2D vertex : hullVertices) {
+            double y = vertex.getY();
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+        }
+        return maxY - minY;
     }
 
     @Override
@@ -108,25 +108,25 @@ public class TankHull extends Actor implements Decomposable {
             setPosition(new Point2D(xPos, yPos));
             double angleDegrees = Math.toDegrees(physicsBody.getAngle());
             if (!showingOutline) {
-                mergedVisualPolygon.setLayoutX(xPos);
-                mergedVisualPolygon.setLayoutY(yPos);
+                mergedVisualPolygon.setLayoutX(0);
+                mergedVisualPolygon.setLayoutY(0);
                 mergedVisualPolygon.setRotate(angleDegrees);
             } else {
-                subPolysGroup.setLayoutX(xPos);
-                subPolysGroup.setLayoutY(yPos);
+                subPolysGroup.setLayoutX(0);
+                subPolysGroup.setLayoutY(0);
                 subPolysGroup.setRotate(angleDegrees);
             }
+            System.out.println("TankHull.render() - Physics pos: (" + xPos + ", " + yPos + "), angle: " + angleDegrees);
         }
     }
 
     @Override
     public void teleport(double newX, double newY) {
+        System.out.println("TankHull.teleport() - Teleporting to (" + newX + ", " + newY + ")");
         setPosition(new Point2D(newX, newY));
         if (physicsBody != null) {
-            physicsBody.setTransform(
-                    new Vec2((float)(newX / Constant.SCALE), (float)(newY / Constant.SCALE)),
-                    physicsBody.getAngle()
-            );
+            physicsBody.setTransform(new Vec2((float)(newX / Constant.SCALE), (float)(newY / Constant.SCALE)),
+                    physicsBody.getAngle());
             physicsBody.setAwake(true);
         }
     }

@@ -22,7 +22,7 @@ public class Grass extends DestructibleTerrain {
         super(vertices, fill);
 
 
-        this.craterParameters = new CraterParameters(30, 15, 0, 16);
+        this.craterParameters = new CraterParameters(30, 30, 0, 16);
     }
 
     private static List<Point2D> simplifyAndPrepare(List<Point2D> vertices, double tol) {

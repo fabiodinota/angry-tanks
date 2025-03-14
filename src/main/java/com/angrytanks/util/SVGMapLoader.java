@@ -194,7 +194,6 @@ public class SVGMapLoader {
 
     public static List<Point2D> parsePathData(String d) {
         List<Point2D> points = new ArrayList<>();
-        // Insert a space before a '-' that follows a digit
         d = d.replaceAll("(?<=\\d)-", " -");
 
         String[] tokens = splitByCommand(d);

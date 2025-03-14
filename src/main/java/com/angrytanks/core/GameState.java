@@ -44,15 +44,23 @@ public class GameState {
         players.clear();
 
         for (int i = 0; i < numPlayers; i++) {
-            TankData data = SVGTankLoader.loadTankData("/tanks/tank1.svg");
-            Tank tank = new Tank(data, 500.0, 200.0);
+            TankData data = SVGTankLoader.loadTankData("/tanks/tank1.svg", true);
+            Tank tank = new Tank(data, 900.0, 500.0);
 
 
-            Projectile projectile = new Projectile(1700, 100);
+            Projectile projectile = new Projectile(700, 100);
+            Projectile projectile1 = new Projectile(700, 200);
+            Projectile projectile2 = new Projectile(740, 200);
+            Projectile projectile3 = new Projectile(740, 200);
+
+            world.addActor(projectile);
+            world.addActor(projectile1);
+            world.addActor(projectile2);
+            world.addActor(projectile3);
 //            Projectile projectile1 = new Projectile(xPosition, 200);
 //            Projectile projectile2 = new Projectile(xPosition, 400);
 //            Projectile projectile3 = new Projectile(xPosition, 300);
-            world.addActor(projectile);
+
 //            world.addActor(projectile1);
 //            world.addActor(projectile2);
 //            world.addActor(projectile3);

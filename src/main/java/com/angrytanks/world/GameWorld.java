@@ -22,16 +22,6 @@ public class GameWorld {
 
         actor.addToPhysics(physicsWorld.getPhysicsWorld());
 
-
-
-        /* Old code used to add actors to physics world
-        /* replaced with direct call of the actor self addToPhysics method
-        if (actor instanceof Tank) {
-            ((Tank) actor).addToPhysics(physicsWorld.getPhysicsWorld());
-        } else if (actor instanceof Landscape) {
-            ((Landscape) actor).addToPhysics(physicsWorld.getPhysicsWorld());
-        }
-        */
     }
 
     public void clearActors() {

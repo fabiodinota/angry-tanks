@@ -135,6 +135,7 @@ public class InGameHud {
                 if (actor instanceof Decomposable) {
                     if (showDecomposition.isSelected()) {
                         ((Decomposable) actor).showDecompositionOutline();
+
                     } else {
                         ((Decomposable) actor).hideDecompositionOutline();
                     }

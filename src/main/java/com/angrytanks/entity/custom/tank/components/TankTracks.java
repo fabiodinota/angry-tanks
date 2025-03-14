@@ -1,106 +1,62 @@
 package com.angrytanks.entity.custom.tank.components;
-import com.angrytanks.entity.Actor;
-import com.angrytanks.util.Constant;
+
+import com.angrytanks.entity.Decoration;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.*;
-import org.jbox2d.dynamics.joints.RevoluteJointDef;
+import javafx.scene.shape.Polygon;
+import org.jbox2d.dynamics.World;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TankTracks extends Actor {
+public class TankTracks extends Decoration {
 
-    private final Group trackVisuals;
-    private final List<Body> trackSegments;
-    private final int numSegments;
-    private final float segmentLength;
-    private final float segmentWidth;
-    private World physicsWorld;
+    private final Polygon trackPolygon;
+    private final Group wheelGroup;
+    private final List<TankWheel> wheels;
 
-    public TankTracks(double x, double y) {
-        super(x, y);
-        trackVisuals = new Group();
-        visuals.getChildren().add(trackVisuals);
-        trackSegments = new ArrayList<>();
+    public TankTracks(List<Point2D> trackVertices, List<List<Point2D>> wheelVertices, Color trackColor, Color wheelColor) {
+        super(trackVertices.isEmpty() ? 0 : trackVertices.get(0).getX(),
+                trackVertices.isEmpty() ? 0 : trackVertices.get(0).getY());
+        trackPolygon = new Polygon();
+        for (Point2D pt : trackVertices) {
+            trackPolygon.getPoints().addAll(pt.getX(), pt.getY());
+        }
+        trackPolygon.setFill(trackColor != null ? trackColor : Color.DARKGRAY);
 
-        numSegments = 20;
-        segmentLength = 8f;
-        segmentWidth  = 2f;
+        wheels = new ArrayList<>();
+        for (List<Point2D> wVerts : wheelVertices) {
+            TankWheel wheel = new TankWheel(wVerts, wheelColor);
+            wheels.add(wheel);
+        }
+
+        wheelGroup = new Group();
+        for (TankWheel wheel : wheels) {
+            wheelGroup.getChildren().add(wheel.getVisuals());
+        }
+
+        visuals.getChildren().addAll(trackPolygon, wheelGroup);
     }
 
     @Override
     public void addToPhysics(World physicsWorld) {
-        this.physicsWorld = physicsWorld;
-
-        float radius = 15f;
-
-        for (int i = 0; i < numSegments; i++) {
-            double angle = 2 * Math.PI * i / numSegments;
-            double segX = getPosition().getX() + radius * Math.cos(angle);
-            double segY = getPosition().getY() + radius * Math.sin(angle);
-
-            BodyDef bd = new BodyDef();
-            bd.type = BodyType.DYNAMIC;
-            bd.position.set((float)(segX / Constant.SCALE), (float)(segY / Constant.SCALE));
-            Body segment = physicsWorld.createBody(bd);
-
-            PolygonShape shape = new PolygonShape();
-            // half-length, half-width
-            shape.setAsBox(segmentLength/2f / (float)Constant.SCALE, segmentWidth/2f / (float)Constant.SCALE);
-
-            FixtureDef fd = new FixtureDef();
-            fd.shape = shape;
-            fd.density = 1.0f;
-            fd.friction = 0.8f;
-            segment.createFixture(fd);
-            segment.setUserData(this);
-
-            trackSegments.add(segment);
-        }
-
-        for (int i = 0; i < numSegments; i++) {
-            Body current = trackSegments.get(i);
-            Body next    = trackSegments.get((i+1) % numSegments);
-
-            RevoluteJointDef jointDef = new RevoluteJointDef();
-            Vec2 anchor = current.getPosition().add(next.getPosition()).mul(0.5f);
-            jointDef.initialize(current, next, anchor);
-            jointDef.collideConnected = false;
-            physicsWorld.createJoint(jointDef);
-        }
     }
 
     @Override
     public void render() {
-        trackVisuals.getChildren().clear();
-
-        for (Body segment : trackSegments) {
-            float xPos = segment.getPosition().x * (float)Constant.SCALE;
-            float yPos = segment.getPosition().y * (float)Constant.SCALE;
-
-            Rectangle rect = new Rectangle(segmentLength, segmentWidth);
-            rect.setFill(Color.DARKGRAY);
-            rect.setX(xPos - segmentLength/2);
-            rect.setY(yPos - segmentWidth/2);
-            rect.setRotate(Math.toDegrees(segment.getAngle()));
-
-            trackVisuals.getChildren().add(rect);
-        }
+        trackPolygon.setLayoutX(0);
+        trackPolygon.setLayoutY(0);
+        wheelGroup.setLayoutX(0);
+        wheelGroup.setLayoutY(0);
     }
 
     @Override
     public void teleport(double newX, double newY) {
         setPosition(new Point2D(newX, newY));
-        for (Body segment : trackSegments) {
-            segment.setTransform(
-                    new Vec2((float)(newX/Constant.SCALE), (float)(newY/Constant.SCALE)),
-                    segment.getAngle()
-            );
-        }
+        trackPolygon.setLayoutX(0);
+        trackPolygon.setLayoutY(0);
+        wheelGroup.setLayoutX(0);
+        wheelGroup.setLayoutY(0);
     }
 }

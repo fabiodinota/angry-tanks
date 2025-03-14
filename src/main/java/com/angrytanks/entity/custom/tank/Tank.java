@@ -274,14 +274,16 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
     }
 
     private void setupDebugLines() {
-        if (debugLinesAdded) return;
         Platform.runLater(() -> {
+            visuals.getChildren().removeAll(leftRayLine, midRayLine, rightRayLine);
+
             leftRayLine.setStroke(Color.RED);
             midRayLine.setStroke(Color.GREEN);
             rightRayLine.setStroke(Color.BLUE);
             leftRayLine.setStrokeWidth(2);
             midRayLine.setStrokeWidth(2);
             rightRayLine.setStrokeWidth(2);
+
             visuals.getChildren().addAll(leftRayLine, midRayLine, rightRayLine);
             debugLinesAdded = true;
         });

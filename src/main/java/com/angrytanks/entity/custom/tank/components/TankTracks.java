@@ -41,10 +41,12 @@ public class TankTracks extends Decoration {
 
     @Override
     public void addToPhysics(World physicsWorld) {
+        // Visual only.
     }
 
     @Override
     public void render() {
+        // Update positions if needed.
         trackPolygon.setLayoutX(0);
         trackPolygon.setLayoutY(0);
         wheelGroup.setLayoutX(0);

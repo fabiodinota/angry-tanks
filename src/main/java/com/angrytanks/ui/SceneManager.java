@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class SceneManager {
 
@@ -28,6 +29,7 @@ public class SceneManager {
     private WinLoseController winLoseController;
 
     public SceneManager(Stage stage) {
+        stage.setResizable(false);
         this.primaryStage = stage;
         initScenes();
     }
@@ -40,6 +42,7 @@ public class SceneManager {
             mainMenuController = mainMenuLoader.getController();
             mainMenuController.setSceneManager(this);
             mainMenuScene = new Scene(mainMenuRoot, 800, 600);
+            mainMenuScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/angrytanks/css/mainmenu.css")).toExternalForm());
 
             // Tank Selection
             FXMLLoader tankSelectionLoader = new FXMLLoader(getClass().getResource("/com/angrytanks/fxml/TankSelection.fxml"));

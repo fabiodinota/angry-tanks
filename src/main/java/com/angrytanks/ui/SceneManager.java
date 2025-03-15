@@ -41,7 +41,7 @@ public class SceneManager {
             Parent mainMenuRoot = mainMenuLoader.load();
             mainMenuController = mainMenuLoader.getController();
             mainMenuController.setSceneManager(this);
-            mainMenuScene = new Scene(mainMenuRoot, 800, 600);
+            mainMenuScene = new Scene(mainMenuRoot, 1980, 1080);
             mainMenuScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/angrytanks/css/mainmenu.css")).toExternalForm());
 
             // Tank Selection
@@ -49,7 +49,8 @@ public class SceneManager {
             Parent tankSelectionRoot = tankSelectionLoader.load();
             tankSelectionController = tankSelectionLoader.getController();
             tankSelectionController.setSceneManager(this);
-            tankSelectionScene = new Scene(tankSelectionRoot, 800, 600);
+            tankSelectionScene = new Scene(tankSelectionRoot, 1980, 1080);
+            tankSelectionScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/angrytanks/css/tankselection.css")).toExternalForm());
 
             // Game UI
             FXMLLoader gameUILoader = new FXMLLoader(getClass().getResource("/com/angrytanks/fxml/GameUI.fxml"));
@@ -63,7 +64,7 @@ public class SceneManager {
             Parent winLoseRoot = winLoseLoader.load();
             winLoseController = winLoseLoader.getController();
             winLoseController.setSceneManager(this);
-            winLoseScene = new Scene(winLoseRoot, 800, 600);
+            winLoseScene = new Scene(winLoseRoot, 1980, 1080);
 
         } catch (IOException e) {
             e.printStackTrace();

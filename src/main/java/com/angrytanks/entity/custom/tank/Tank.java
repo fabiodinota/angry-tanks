@@ -76,8 +76,8 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
             hull.addToPhysics(physicsWorld);
             if (hull.getPhysicsBody() != null) {
                 hull.getPhysicsBody().setTransform(
-                        new org.jbox2d.common.Vec2((float)(getPosition().getX() / Constant.SCALE),
-                                (float)(getPosition().getY() / Constant.SCALE)),
+                        new org.jbox2d.common.Vec2((float) (getPosition().getX() / Constant.SCALE),
+                                (float) (getPosition().getY() / Constant.SCALE)),
                         hull.getPhysicsBody().getAngle());
             }
         }
@@ -111,9 +111,9 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
 
         Body tankBody = hull.getPhysicsBody();
         HullBounds bounds = getHullBounds();
-        float hullWidthMeters = (float)(bounds.width / Constant.SCALE);
-        float hullHeightMeters = (float)(hull.getHullHeight() / Constant.SCALE);
-        float centerOffsetX = (float)(bounds.centerX / Constant.SCALE);
+        float hullWidthMeters = (float) (bounds.width / Constant.SCALE);
+        float hullHeightMeters = (float) (hull.getHullHeight() / Constant.SCALE);
+        float centerOffsetX = (float) (bounds.centerX / Constant.SCALE);
         float halfTankWidth = hullWidthMeters / 2.0f;
 
         float yOffest = 0.4f;
@@ -153,10 +153,10 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
 
         if (leftHit[0] != null && rightHit[0] != null) {
             Vec2 groundVector = rightHit[0].sub(leftHit[0]);
-            float desiredAngle = (float)Math.atan2(groundVector.y, groundVector.x);
+            float desiredAngle = (float) Math.atan2(groundVector.y, groundVector.x);
             float currentAngle = tankBody.getAngle();
             float angleDifference = desiredAngle - currentAngle;
-            angleDifference = (float)Math.atan2((float)Math.sin(angleDifference), (float)Math.cos(angleDifference));
+            angleDifference = (float) Math.atan2((float) Math.sin(angleDifference), (float) Math.cos(angleDifference));
             float correctionFactor = 0.5f;
             tankBody.setAngularVelocity(angleDifference * correctionFactor);
             tankBody.setFixedRotation(true);
@@ -183,11 +183,10 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
     }
 
     private Vec2 rotate(Vec2 v, float angle) {
-        float cos = (float)Math.cos(angle);
-        float sin = (float)Math.sin(angle);
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
         return new Vec2(v.x * cos - v.y * sin, v.x * sin + v.y * cos);
     }
-
 
 
     @Override
@@ -246,6 +245,7 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
 
         return maxX - minX;
     }
+
     public class HullBounds {
         public double minX, maxX, width, centerX;
 

@@ -10,13 +10,11 @@
            fx:controller="com.angrytanks.ui.controllers.MainMenuController"
            prefWidth="800" prefHeight="600">
 
-    <!-- Background Image -->
     <ImageView fx:id="backgroundImage"
                fitWidth="800"
                fitHeight="600"
                preserveRatio="false" />
 
-    <!-- Main VBox (centered by StackPane) -->
     <VBox fx:id="mainBox"
           alignment="CENTER"
           spacing="30">

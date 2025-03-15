@@ -20,7 +20,7 @@ public class PhysicsWorld {
     }
 
     public void update() {
-        physicsWorld.step(1 / 60f, 8, 3);
+        physicsWorld.step(1 / 60f, 16, 7);
         for (Runnable r : pendingActions) {
             r.run();
         }

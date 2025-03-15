@@ -16,7 +16,6 @@ public class InputActions implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent event) {
-        System.out.println("Key event received: " + event.getEventType() + " - " + event.getCode());
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
             if (event.getCode() == KeyCode.A) {
                 System.out.println("InputActions: moveLeft");
@@ -27,6 +26,12 @@ public class InputActions implements EventHandler<KeyEvent> {
             } else if (event.getCode() == KeyCode.SPACE) {
                 System.out.println("InputActions: fire");
                 tankController.fire();
+            } else if (event.getCode() == KeyCode.W) {
+                System.out.println("InputActions: rotateTurretUp");
+               // tankController.turretUp();
+            } else if (event.getCode() == KeyCode.S) {
+                System.out.println("InputActions: rotateTurretDown");
+                //tankController.turretDown();
             }
         } else if (event.getEventType() == KeyEvent.KEY_RELEASED) {
             if (event.getCode() == KeyCode.A || event.getCode() == KeyCode.D) {

@@ -26,6 +26,18 @@
 
 }
 
+.name-button {
+    -fx-font-family: "Press Start 2P Regular";
+    -fx-font-size: 12px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, black, 4, 0.8, 2, 2);
+
+}
 
 /* Hover effect for buttons */
 .menu-button:hover {

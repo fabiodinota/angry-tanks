@@ -62,6 +62,13 @@ public class SVGTankLoader {
                 System.out.println("SVGTankLoader: Loading TankTurret");
                 tankData.setTurretVertices(finalVerts);
                 tankData.setTurretColor(fillColor);
+            } else if ("tank_cannon".equalsIgnoreCase(shapeId)) {
+                System.out.println("SVGTankLoader: Loading TankCannon");
+                tankData.setCannonVertices(finalVerts);
+                tankData.setCannonColor(fillColor);
+            } else if ("cannon_path".equalsIgnoreCase(shapeId)) {
+                System.out.println("SVGTankLoader: Loading CannonPath");
+                tankData.setCannonPath(finalVerts);
             }
         }
         return tankData;

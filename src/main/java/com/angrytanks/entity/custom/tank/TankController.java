@@ -7,8 +7,8 @@ public class TankController {
 
     private final Tank tank;
 
-    private final float moveForce = 15f;
-    private final float maxSpeed = 1f;
+    private final float moveForce = 30f;
+    private final float maxSpeed = 0.8f;
 
     public TankController(Tank tank) {
         this.tank = tank;

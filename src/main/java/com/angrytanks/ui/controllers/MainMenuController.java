@@ -1,6 +1,7 @@
 package com.angrytanks.ui.controllers;
 
 import com.angrytanks.ui.SceneManager;
+import com.angrytanks.util.BackgroundUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -35,52 +36,55 @@ public class MainMenuController {
     private SceneManager sceneManager;
 
     @FXML
-    public void initialize() {
-        // Set your background image (replace with actual path/resource)
-        backgroundImage.setImage(new Image(
-                getClass().getResource("/com/angrytanks/images/angrytanks_background.png").toExternalForm()
-        ));
 
+    public void initialize() {
+        // Set up the background using the utility method
+        BackgroundUtils.setupBackground(stackPane, backgroundImage, "/com/angrytanks/images/bg2.png");
+
+        // Load custom font
         Font font = Font.loadFont(
                 getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"),
                 16
         );
+
         if (font == null) {
             System.out.println("Failed to load the TTF - it may be invalid or not recognized by JavaFX.");
         } else {
             System.out.println("Loaded font successfully: " + font.getName());
         }
 
-        // Make sure each button can be focused and can handle arrow keys
+        // Make buttons focusable
         playButton.setFocusTraversable(true);
         shopButton.setFocusTraversable(true);
         leaderboardButton.setFocusTraversable(true);
         exitButton.setFocusTraversable(true);
 
-        // Optional: Start focused on the first button
+        // Set focus on the first button
+        stackPane.setFocusTraversable(true);
         stackPane.requestFocus();
-
         focusButton(0);
 
-        // Listen for arrow key presses on the root (or scene)
+        // Listen for key presses
         stackPane.setOnKeyPressed(this::handleKeyPress);
 
-        // Add mouse click handlers
+        // Set button actions
         playButton.setOnAction(event -> onPlayClicked());
         shopButton.setOnAction(event -> onShopClicked());
         leaderboardButton.setOnAction(event -> onLeaderboardClicked());
         exitButton.setOnAction(event -> onExitClicked());
     }
 
+
     private void handleKeyPress(KeyEvent event) {
-        if (event.getCode() == KeyCode.UP) {
+        if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.W) {
             currentIndex = (currentIndex - 1 + menuBox.getChildren().size()) % menuBox.getChildren().size();
             focusButton(currentIndex);
-        } else if (event.getCode() == KeyCode.DOWN) {
+        } else if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.TAB || event.getCode() == KeyCode.S) {
             currentIndex = (currentIndex + 1) % menuBox.getChildren().size();
             focusButton(currentIndex);
+
         } else if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
-            // "Click" the currently focused button
+
             Button focusedButton = (Button) menuBox.getChildren().get(currentIndex);
             focusedButton.fire();
         }

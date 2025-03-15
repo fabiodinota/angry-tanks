@@ -1,15 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.angrytanks.ui.controllers.TankSelectionController"
-            prefWidth="800" prefHeight="600">
-    <Label text="Enter Your Name:" layoutX="300" layoutY="200"/>
-    <TextField fx:id="nameField" layoutX="420" layoutY="195" />
-    <Button text="Select Tank  Start" layoutX="350" layoutY="250" onAction="#onTankSelected"/>
-    <Button text="Back to Menu" layoutX="350" layoutY="300" onAction="#onBackClicked"/>
-</AnchorPane>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<StackPane fx:id="stackPane"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.angrytanks.ui.controllers.TankSelectionController"
+           prefWidth="800" prefHeight="600">
+
+    <ImageView fx:id="backgroundImage"
+               fitWidth="800"
+               fitHeight="600"
+               preserveRatio="false" />
+
+    <AnchorPane>
+        <ImageView fx:id="leftTankFrame"
+                   layoutX="450" layoutY="300"
+                   fitWidth="360" fitHeight="244"
+                   preserveRatio="false"
+                   pickOnBounds="true" />
+        <VBox layoutX="500" layoutY="580" spacing="10" alignment="CENTER">
+
+            <Label text="Enter Your Name:" />
+            <TextField fx:id="nameField" prefWidth="200" />
+        </VBox>
+        <ImageView fx:id="rightTankFrame"
+                   layoutX="1200" layoutY="300"
+                   fitWidth="360" fitHeight="244"
+                   preserveRatio="false"
+                   pickOnBounds="true" />
+
+        <VBox layoutX="1250" layoutY="580" spacing="10" alignment="CENTER">
+
+            <Label text="Enter Your Name:" />
+            <TextField fx:id="nameField2" prefWidth="200" />
+        </VBox>
+
+        <VBox layoutX="850" layoutY="600" spacing="10" alignment="CENTER">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+
+            <Button text="Select Tank  Start" onAction="#onTankSelected" />
+            <Button text="Back to Menu" onAction="#onBackClicked" />
+        </VBox>
+    </AnchorPane>
+</StackPane>

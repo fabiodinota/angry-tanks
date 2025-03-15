@@ -20,7 +20,7 @@ public class MyContactListener implements ContactListener {
         Actor aB = extractActor(contact.getFixtureB());
 
         if (aA == null || aB == null) {
-            System.out.println("[ContactListener] One fixture has no Actor userData. Skipping...");
+         //   System.out.println("[ContactListener] One fixture has no Actor userData. Skipping...");
             return;
         }
 

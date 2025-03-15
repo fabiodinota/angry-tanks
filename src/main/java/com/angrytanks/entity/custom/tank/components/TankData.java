@@ -2,12 +2,16 @@ package com.angrytanks.entity.custom.tank.components;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TankData {
     private List<Point2D> hullVertices = new ArrayList<>();
     private Color hullColor;
+
+    private List<Point2D> cannonVertices = new ArrayList<>();
+    private Color cannonColor;
 
     private List<Point2D> trackVertices = new ArrayList<>();
     private Color trackColor;
@@ -21,6 +25,10 @@ public class TankData {
     private List<Point2D> turretVertices = new ArrayList<>();
     private Color turretColor;
 
+    private List<Point2D> cannonPathPoints  = new ArrayList<>();
+
+
+    // getters / setters ...
     public List<Point2D> getHullVertices() {
         return hullVertices;
     }
@@ -81,4 +89,29 @@ public class TankData {
     public void setTurretColor(Color turretColor) {
         this.turretColor = turretColor;
     }
+
+    public List<Point2D> getCannonVertices() {
+        return cannonVertices;
+    }
+
+    public void setCannonVertices(List<Point2D> cannonVertices) {
+        this.cannonVertices = cannonVertices;
+    }
+
+    public Color getCannonColor() {
+        return cannonColor;
+    }
+
+    public void setCannonColor(Color cannonColor) {
+        this.cannonColor = cannonColor;
+    }
+
+    public List<Point2D> getCannonPath() {
+        return cannonPathPoints;
+    }
+
+    public void setCannonPath(List<Point2D> cannonPathPoints) {
+        this.cannonPathPoints = cannonPathPoints;
+    }
+
 }

@@ -1,16 +1,18 @@
 package com.angrytanks.entity.custom.tank.components;
 
+import com.angrytanks.entity.Actor;
 import com.angrytanks.entity.Decoration;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import org.jbox2d.dynamics.World;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TankTracks extends Decoration {
+public class TankTracks extends Decoration   {
 
     private final Polygon trackPolygon;
     private final Group wheelGroup;
@@ -37,6 +39,8 @@ public class TankTracks extends Decoration {
         }
 
         visuals.getChildren().addAll(trackPolygon, wheelGroup);
+
+
     }
 
     @Override

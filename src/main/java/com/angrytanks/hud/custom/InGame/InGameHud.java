@@ -3,6 +3,7 @@ package com.angrytanks.hud.custom.InGame;
 import com.angrytanks.core.GameState;
 import com.angrytanks.entity.custom.tank.Tank;
 import com.angrytanks.util.Decomposable;
+import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -20,17 +21,17 @@ public class InGameHud {
     public InGameHud() {
         this.hudPane = new Pane();
         canvas = new Canvas(800, 600);
+        Group trajectoryLayer;
     }
 
 
     public void showGameHUD() {
-        GameState.setupPlayers(1);
+        GameState.setupPlayers(2, "/tanks/tank2.svg", "/tanks/tankrus.svg");
 
 
 
         String bgFile = GameState.getMapLayout().getBackgroundName();
         if (bgFile != null && !bgFile.isEmpty()) {
-            System.out.println("Loading background image: " + bgFile);
             String resourcePath = "/backgrounds/" + bgFile;
             InputStream bgStream = getClass().getResourceAsStream(resourcePath);
             if (bgStream != null) {
@@ -147,9 +148,13 @@ public class InGameHud {
 
     public void render() {
         for (Actor actor : GameState.world.getAllActors()) {
+            if (!hudPane.getChildren().contains(actor.getVisuals())) {
+                hudPane.getChildren().add(actor.getVisuals()); // Ensure it's added
+            }
             actor.render();
         }
     }
+
 
     public Canvas getCanvas() {
         return canvas;

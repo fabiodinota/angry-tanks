@@ -20,7 +20,7 @@ public class Landscape extends DestructibleTerrain {
         super(vertices, fill);
 
 
-        this.craterParameters = new CraterParameters(70, 45, 0, 100);
+        this.craterParameters = new CraterParameters(35, 45, 0, 100);
 
     }
 

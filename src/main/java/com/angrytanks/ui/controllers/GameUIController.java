@@ -42,13 +42,12 @@ public class GameUIController {
 
         Scene scene = gameContainer.getScene();
         if (scene != null) {
-
-            if (!GameState.players.isEmpty()) {
-                Tank playerTank = GameState.players.get(0);
-                TankController tankController = new TankController(playerTank);
+            Tank currentTank = GameState.getCurrentPlayer();
+            if (currentTank != null) {
+                TankController tankController = new TankController(currentTank);
                 InputActions inputActions = new InputActions(tankController);
                 scene.addEventHandler(KeyEvent.ANY, inputActions);
-                System.out.println("InputActions attached to the scene.");
+                System.out.println("InputActions attached to the scene for the current tank.");
             } else {
                 System.out.println("No player tanks found.");
             }

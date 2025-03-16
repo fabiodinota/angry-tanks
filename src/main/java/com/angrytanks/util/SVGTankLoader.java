@@ -9,14 +9,6 @@ import java.util.List;
 
 public class SVGTankLoader {
 
-    /**
-     * Loads tank parts from the given SVG.
-     *
-     * @param resourcePath      e.g. "/tanks/tank1.svg"
-     * @param shiftToLocalZero  if true, all vertices are shifted so that the overall tank’s bounding box starts at (0,0);
-     *                          if false, the original SVG coordinates are preserved.
-     * @return a TankData object with hull, track, wheel, and decor vertices/colors set.
-     */
     public static TankData loadTankData(String resourcePath, boolean shiftToLocalZero) {
         TankData tankData = new TankData();
         List<MapElement> elements = SVGMapLoader.loadMapElements(resourcePath);
@@ -35,42 +27,40 @@ public class SVGTankLoader {
         }
 
         for (MapElement me : elements) {
-            String shapeId = me.getType(); // expected: "tank_hull", "tank_track", "tank_wheel", "tank_decor"
+            String shapeId = me.getType();
+
+            String normalizedId = shapeId.toLowerCase().replaceAll("(_\\d+)+_?$", "");
+
             Color fillColor = me.getFillColor();
             List<Point2D> rawVerts = me.getVertices();
             List<Point2D> finalVerts = shiftToLocalZero ? shiftVertices(rawVerts, globalMinX, globalMinY) : rawVerts;
 
-            if ("tank_hull".equalsIgnoreCase(shapeId)) {
-                System.out.println("SVGTankLoader: Loading TankHull");
+            if ("tank_hull".equals(normalizedId)) {
+
                 tankData.setHullVertices(finalVerts);
                 tankData.setHullColor(fillColor);
-            } else if ("tank_track".equalsIgnoreCase(shapeId)) {
-                System.out.println("SVGTankLoader: Loading TankTrack");
+            } else if ("tank_track".equals(normalizedId)) {
                 tankData.setTrackVertices(finalVerts);
                 tankData.setTrackColor(fillColor);
-            } else if ("tank_wheel".equalsIgnoreCase(shapeId)) {
-                System.out.println("SVGTankLoader: Loading TankWheel");
+            } else if ("tank_wheel".equals(normalizedId)) {
                 tankData.getWheelVertices().add(finalVerts);
                 if (tankData.getWheelColor() == null && fillColor != null) {
                     tankData.setWheelColor(fillColor);
                 }
-            } else if ("tank_decor".equalsIgnoreCase(shapeId)) {
-                System.out.println("SVGTankLoader: Loading TankDecor");
+            } else if ("tank_decor".equals(normalizedId)) {
                 tankData.setDecorVertices(finalVerts);
                 tankData.setDecorColor(fillColor);
-            } else if ("tank_turret".equalsIgnoreCase(shapeId)) {
-                System.out.println("SVGTankLoader: Loading TankTurret");
+            } else if ("tank_turret".equals(normalizedId)) {
                 tankData.setTurretVertices(finalVerts);
                 tankData.setTurretColor(fillColor);
-            } else if ("tank_cannon".equalsIgnoreCase(shapeId)) {
-                System.out.println("SVGTankLoader: Loading TankCannon");
+            } else if ("tank_cannon".equals(normalizedId)) {
                 tankData.setCannonVertices(finalVerts);
                 tankData.setCannonColor(fillColor);
-            } else if ("cannon_path".equalsIgnoreCase(shapeId)) {
-                System.out.println("SVGTankLoader: Loading CannonPath");
-                tankData.setCannonPath(finalVerts);
+            } else if ("cannon_anchor".equals(normalizedId)) {
+                tankData.setCannonAnchor(finalVerts);
             }
         }
+
         return tankData;
     }
 

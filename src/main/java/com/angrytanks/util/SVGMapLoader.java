@@ -168,9 +168,9 @@ public class SVGMapLoader {
                 String colorStr = cssFills.get(token);
                 try {
                     return Color.web(colorStr);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Warning: Invalid color specification \"" + colorStr + "\" for class \"" + token + "\". Using fallback color.");
+                    return Color.GRAY;
                 }
             }
         }

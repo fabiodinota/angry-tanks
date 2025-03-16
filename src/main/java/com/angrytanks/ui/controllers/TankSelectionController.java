@@ -42,8 +42,7 @@ public class TankSelectionController {
         String leftName = nameField.getText();
         String rightName = nameField2.getText();
 
-        System.out.println("Left Tank Name: " + leftName);
-        System.out.println("Right Tank Name: " + rightName);
+
 
         if (sceneManager != null && !leftName.isEmpty() && !rightName.isEmpty()) {
             sceneManager.showGameScene();

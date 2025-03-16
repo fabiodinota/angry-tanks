@@ -18,7 +18,7 @@ public class Sand extends DestructibleTerrain {
     public Sand(double x, double y, List<Point2D> vertices, Color fill) {
         super(vertices, fill);
 
-        this.craterParameters = new CraterParameters(70, 45, 0, 100);
+        this.craterParameters = new CraterParameters(40, 35, 0, 100);
 
     }
 

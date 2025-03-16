@@ -1,5 +1,6 @@
 package com.angrytanks.entity.custom.tank;
 
+import com.angrytanks.entity.Actor;
 import com.angrytanks.entity.custom.tank.components.*;
 
 import com.angrytanks.util.Decomposable;
@@ -18,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.application.Platform;
 
 
-public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
+public class Tank extends Actor implements Decomposable {
 
     private TankHull hull;
     private TankTracks tracks;
@@ -26,18 +27,15 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
     private TankDecor decor;
     private TankData tankData;
     private final Group tankGroup = new Group();
-
-    private Line leftRayLine = new Line();
-    private Line midRayLine = new Line();
-    private Line rightRayLine = new Line();
-    private boolean debugLinesAdded = false;
+    private boolean mirrored = false;
 
 
-    public Tank(TankData tankData, double spawnX, double spawnY) {
+
+    public Tank(TankData tankData, double spawnX, double spawnY, boolean mirrored) {
         super(spawnX, spawnY);
 
 
-        setupDebugLines();
+
 
         this.tankData = tankData;
         hull = new TankHull(tankData.getHullVertices(), tankData.getHullColor());
@@ -51,7 +49,7 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
             decor = new TankDecor(tankData.getDecorVertices(), tankData.getDecorColor());
         }
         if (!tankData.getTurretVertices().isEmpty()) {
-            turret = new TankTurret(tankData.getTurretVertices(), tankData.getTurretColor());
+            turret = new TankTurret(tankData, this);
         }
         if (hull != null) {
             tankGroup.getChildren().add(hull.getVisuals());
@@ -66,6 +64,14 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
             tankGroup.getChildren().add(turret.getVisuals());
         }
         visuals.getChildren().add(tankGroup);
+        this.mirrored = mirrored;
+
+
+        if (mirrored) {
+            tankGroup.setScaleX(-1);
+            getTurret().getCannon().setMirrored(true);
+
+        }
 
         teleport(spawnX, spawnY);
     }
@@ -75,15 +81,22 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
         if (hull != null) {
             hull.addToPhysics(physicsWorld);
             if (hull.getPhysicsBody() != null) {
+                hull.getPhysicsBody().setUserData(this);
+
                 hull.getPhysicsBody().setTransform(
-                        new org.jbox2d.common.Vec2((float) (getPosition().getX() / Constant.SCALE),
+                        new Vec2((float) (getPosition().getX() / Constant.SCALE),
                                 (float) (getPosition().getY() / Constant.SCALE)),
                         hull.getPhysicsBody().getAngle());
             }
         }
-        if (tracks != null) {
-            tracks.addToPhysics(physicsWorld);
+        if (turret != null) {
+            turret.addToPhysics(physicsWorld);
+
         }
+        if (turret != null) {
+            turret.addToPhysics(physicsWorld);
+        }
+
     }
 
     @Override
@@ -100,14 +113,17 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
 
             alignWithSurface(PhysicsWorld.getPhysicsWorld());
 
+            if (turret != null) {
+                turret.render();
+            }
+
 
             // System.out.println("Tank.render() - Global position: (" + xPos + ", " + yPos + "), angle: " + angleDegrees);
         }
     }
 
-    //copied from stackoverflow and github box2d
     public void alignWithSurface(World physicsWorld) {
-        setupDebugLines();
+
 
         Body tankBody = hull.getPhysicsBody();
         HullBounds bounds = getHullBounds();
@@ -118,25 +134,30 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
 
         float yOffest = 0.4f;
         Vec2 leftLocal = new Vec2(-halfTankWidth + centerOffsetX, hullHeightMeters + yOffest);
-        Vec2 midLocal = new Vec2(centerOffsetX, hullHeightMeters + yOffest);
-        Vec2 rightLocal = new Vec2(halfTankWidth + centerOffsetX, hullHeightMeters + yOffest);
+        Vec2 midLocal  = new Vec2(centerOffsetX,               hullHeightMeters + yOffest);
+        Vec2 rightLocal= new Vec2(halfTankWidth + centerOffsetX, hullHeightMeters + yOffest);
 
         float angle = tankBody.getAngle();
         Vec2 leftOffset = rotate(leftLocal, angle);
-        Vec2 midOffset = rotate(midLocal, angle);
-        Vec2 rightOffset = rotate(rightLocal, angle);
+        Vec2 midOffset  = rotate(midLocal, angle);
+        Vec2 rightOffset= rotate(rightLocal, angle);
 
         Vec2 tankPosition = tankBody.getPosition();
         Vec2 leftRayStart = tankPosition.add(leftOffset);
-        Vec2 midRayStart = tankPosition.add(midOffset);
-        Vec2 rightRayStart = tankPosition.add(rightOffset);
+        Vec2 midRayStart  = tankPosition.add(midOffset);
+        Vec2 rightRayStart= tankPosition.add(rightOffset);
+
+        if (isMirrored()) {
+            Vec2 temp = leftRayStart;
+            leftRayStart = rightRayStart;
+            rightRayStart = temp;
+        }
 
         float rayLength = 0.2f;
         Vec2 rayDown = new Vec2(0, rayLength);
         Vec2 leftRayEnd = leftRayStart.add(rayDown);
-        Vec2 midRayEnd = midRayStart.add(rayDown);
-        Vec2 rightRayEnd = rightRayStart.add(rayDown);
-
+        Vec2 midRayEnd  = midRayStart.add(rayDown);
+        Vec2 rightRayEnd= rightRayStart.add(rayDown);
 
         final Vec2[] leftHit = {null};
         final Vec2[] rightHit = {null};
@@ -156,31 +177,26 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
             float desiredAngle = (float) Math.atan2(groundVector.y, groundVector.x);
             float currentAngle = tankBody.getAngle();
             float angleDifference = desiredAngle - currentAngle;
-            angleDifference = (float) Math.atan2((float) Math.sin(angleDifference), (float) Math.cos(angleDifference));
-            float correctionFactor = 0.5f;
+            angleDifference = (float) Math.atan2(Math.sin(angleDifference), Math.cos(angleDifference));
+
+            if (isMirrored()) {
+                angleDifference *= -1;
+            }
+
+            float correctionFactor = 0.1f;
             tankBody.setAngularVelocity(angleDifference * correctionFactor);
             tankBody.setFixedRotation(true);
         } else {
             tankBody.setFixedRotation(false);
         }
 
-        Platform.runLater(() -> {
-            leftRayLine.setStartX(leftRayStart.x * Constant.SCALE);
-            leftRayLine.setStartY(leftRayStart.y * Constant.SCALE);
-            leftRayLine.setEndX(leftRayEnd.x * Constant.SCALE);
-            leftRayLine.setEndY(leftRayEnd.y * Constant.SCALE);
 
-            midRayLine.setStartX(midRayStart.x * Constant.SCALE);
-            midRayLine.setStartY(midRayStart.y * Constant.SCALE);
-            midRayLine.setEndX(midRayEnd.x * Constant.SCALE);
-            midRayLine.setEndY(midRayEnd.y * Constant.SCALE);
-
-            rightRayLine.setStartX(rightRayStart.x * Constant.SCALE);
-            rightRayLine.setStartY(rightRayStart.y * Constant.SCALE);
-            rightRayLine.setEndX(rightRayEnd.x * Constant.SCALE);
-            rightRayLine.setEndY(rightRayEnd.y * Constant.SCALE);
-        });
     }
+
+
+
+
+
 
     private Vec2 rotate(Vec2 v, float angle) {
         float cos = (float) Math.cos(angle);
@@ -204,7 +220,6 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
         if (decor != null) {
             decor.teleport(newX, newY);
         }
-        System.out.println("Tank.teleport() - Teleporting tank to (" + newX + ", " + newY + ")");
     }
 
     @Override
@@ -230,7 +245,9 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
     public TankHull getHull() {
         return hull;
     }
-
+    public boolean isMirrored() {
+        return mirrored;
+    }
     public double getHullWidth() {
         if (tankData.getHullVertices().isEmpty()) return 0;
 
@@ -245,6 +262,8 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
 
         return maxX - minX;
     }
+
+
 
     public class HullBounds {
         public double minX, maxX, width, centerX;
@@ -273,19 +292,8 @@ public class Tank extends com.angrytanks.entity.Actor implements Decomposable {
         return new HullBounds(minX, maxX);
     }
 
-    private void setupDebugLines() {
-        Platform.runLater(() -> {
-            visuals.getChildren().removeAll(leftRayLine, midRayLine, rightRayLine);
 
-            leftRayLine.setStroke(Color.RED);
-            midRayLine.setStroke(Color.GREEN);
-            rightRayLine.setStroke(Color.BLUE);
-            leftRayLine.setStrokeWidth(2);
-            midRayLine.setStrokeWidth(2);
-            rightRayLine.setStrokeWidth(2);
-
-            visuals.getChildren().addAll(leftRayLine, midRayLine, rightRayLine);
-            debugLinesAdded = true;
-        });
+    public TankTurret getTurret() {
+        return turret;
     }
 }

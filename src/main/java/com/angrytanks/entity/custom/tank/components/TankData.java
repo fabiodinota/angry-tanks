@@ -25,7 +25,7 @@ public class TankData {
     private List<Point2D> turretVertices = new ArrayList<>();
     private Color turretColor;
 
-    private List<Point2D> cannonPathPoints  = new ArrayList<>();
+    private List<Point2D> CannonAnchor  = new ArrayList<>();
 
 
     // getters / setters ...
@@ -106,12 +106,12 @@ public class TankData {
         this.cannonColor = cannonColor;
     }
 
-    public List<Point2D> getCannonPath() {
-        return cannonPathPoints;
+    public List<Point2D> getCannonAnchor() {
+        return CannonAnchor;
     }
 
-    public void setCannonPath(List<Point2D> cannonPathPoints) {
-        this.cannonPathPoints = cannonPathPoints;
+    public void setCannonAnchor(List<Point2D> getCannonAnchor) {
+        this.CannonAnchor = getCannonAnchor;
     }
 
 }

@@ -5,7 +5,6 @@ import com.angrytanks.util.Constant;
 import com.angrytanks.util.ConvexDecomposer;
 import com.angrytanks.util.Decomposable;
 import com.angrytanks.util.PolygonUtil;
-import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -49,7 +48,7 @@ public class TankHull extends Actor implements Decomposable {
     @Override
     public void addToPhysics(World physicsWorld) {
         if (hullVertices.size() < 3) {
-            System.err.println("TankHull: Not enough vertices to form a polygon.");
+
             return;
         }
         BodyDef bd = new BodyDef();
@@ -75,6 +74,7 @@ public class TankHull extends Actor implements Decomposable {
             fd.density = 1.0f;
             fd.friction = 0.5f;
             physicsBody.createFixture(fd);
+
         }
     }
 

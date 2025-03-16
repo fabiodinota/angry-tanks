@@ -38,10 +38,8 @@ public class MainMenuController {
     @FXML
 
     public void initialize() {
-        // Set up the background using the utility method
         BackgroundUtils.setupBackground(stackPane, backgroundImage, "/com/angrytanks/images/bg2.png");
 
-        // Load custom font
         Font font = Font.loadFont(
                 getClass().getResourceAsStream("/fonts/PressStart2P-Regular.ttf"),
                 16
@@ -53,21 +51,17 @@ public class MainMenuController {
             System.out.println("Loaded font successfully: " + font.getName());
         }
 
-        // Make buttons focusable
         playButton.setFocusTraversable(true);
         shopButton.setFocusTraversable(true);
         leaderboardButton.setFocusTraversable(true);
         exitButton.setFocusTraversable(true);
 
-        // Set focus on the first button
         stackPane.setFocusTraversable(true);
         stackPane.requestFocus();
         focusButton(0);
 
-        // Listen for key presses
         stackPane.setOnKeyPressed(this::handleKeyPress);
 
-        // Set button actions
         playButton.setOnAction(event -> onPlayClicked());
         shopButton.setOnAction(event -> onShopClicked());
         leaderboardButton.setOnAction(event -> onLeaderboardClicked());
@@ -91,7 +85,6 @@ public class MainMenuController {
     }
 
     private void focusButton(int newIndex) {
-        // Remove "> " from the previously focused button
         if (previousIndex >= 0 && previousIndex < menuBox.getChildren().size()) {
             Node oldNode = menuBox.getChildren().get(previousIndex);
             if (oldNode instanceof Button) {
@@ -103,15 +96,12 @@ public class MainMenuController {
             }
         }
 
-        // Update the indexes
         currentIndex = newIndex;
         previousIndex = newIndex;
 
-        // Retrieve the new node
         Node newNode = menuBox.getChildren().get(newIndex);
         if (newNode instanceof Button) {
-            // DO NOT requestFocus() here if you want the arrow keys
-            // to remain with the parent container
+
             Button newButton = (Button) newNode;
             String newText = newButton.getText();
             if (!newText.startsWith("> ")) {

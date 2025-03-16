@@ -2,8 +2,12 @@ package com.angrytanks.entity.custom;
 
 import com.angrytanks.entity.Actor;
 import com.angrytanks.entity.MovementComponent;
+import com.angrytanks.entity.custom.tank.Tank;
 import com.angrytanks.util.Constant;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.TriangleMesh;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -14,22 +18,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Projectile extends Actor {
+
     private final Rectangle hitbox;
-   // private MovementComponent movement;
-    //private Point2D impactLocation;
+    private final ImageView imageView;
     public Body physicsBody;
+    private Tank shooter;
 
-    public Projectile(double x, double y){
+    public Projectile(double x, double y, Tank shooter) {
         super(x, y);
-        this.hitbox = new Rectangle(20, 20);
+        this.shooter = shooter;
+        Image projectileImage = new Image(getClass().getResourceAsStream("/tanks/projectile/projectile.png"));
+        imageView = new ImageView(projectileImage);
+        imageView.setX(x);
+        imageView.setY(y);
 
-        this.hitbox.setX(x);
-        this.hitbox.setY(y);
+        imageView.setFitWidth(12.5);
+        imageView.setFitHeight(4);
 
-        this.visuals.getChildren().add(hitbox);
+        hitbox = new Rectangle(18, 6);
+        hitbox.setFill(Color.TRANSPARENT);
 
-       // this.movement = new MovementComponent();
-        //this.impactLocation = null;
+        hitbox.setX(x);
+        hitbox.setY(y);
+
+        visuals.getChildren().addAll(imageView, hitbox);
     }
 
 
@@ -38,18 +50,30 @@ public class Projectile extends Actor {
         if (physicsBody != null) {
             float xPos = (float) (physicsBody.getPosition().x * Constant.SCALE);
             float yPos = (float) (physicsBody.getPosition().y * Constant.SCALE);
-            hitbox.setX(xPos);
-            hitbox.setY(yPos);
+
+            double halfWidth = imageView.getFitWidth() / 2.0;
+            double halfHeight = imageView.getFitHeight() / 2.0;
+            imageView.setX(xPos - halfWidth);
+            imageView.setY(yPos - halfHeight);
+            hitbox.setX(xPos - halfWidth);
+            hitbox.setY(yPos - halfHeight);
+
+
+            Vec2 velocity = physicsBody.getLinearVelocity();
+            double angleRadians = Math.atan2(velocity.y, velocity.x);
+            double angleDegrees = Math.toDegrees(angleRadians);
+            imageView.setRotate(angleDegrees);
 
             setPosition(new Point2D(xPos, yPos));
-        }else {
+        } else {
             visuals.getChildren().clear();
         }
     }
 
+
+
     @Override
     public void addToPhysics(World physicsWorld) {
-        System.out.println("new bullet" + position);
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
@@ -71,9 +95,6 @@ public class Projectile extends Actor {
         return getPosition();
     }
 
-//    public Point2D getImpactLocation() {
-//        return impactLocation;
-//    }
 
     public List<Point2D> calculatePath() {
         return new ArrayList<>();
@@ -107,4 +128,9 @@ public class Projectile extends Actor {
 
         }
     }
+
+    public Tank getShooter() {
+        return shooter;
+    }
+
 }

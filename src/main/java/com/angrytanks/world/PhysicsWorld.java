@@ -20,7 +20,7 @@ public class PhysicsWorld {
     }
 
     public void update() {
-        physicsWorld.step(1 / 60f, 16, 7);
+        physicsWorld.step(1 / 60f, 32, 16);
         for (Runnable r : pendingActions) {
             r.run();
         }
@@ -33,5 +33,9 @@ public class PhysicsWorld {
 
     public static World getPhysicsWorld() {
         return instance.physicsWorld;
+    }
+
+    public Vec2 getGravity() {
+        return physicsWorld.getGravity();
     }
 }

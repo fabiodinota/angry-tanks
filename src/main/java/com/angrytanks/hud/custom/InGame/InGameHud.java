@@ -2,9 +2,9 @@ package com.angrytanks.hud.custom.InGame;
 
 import com.angrytanks.core.GameState;
 import com.angrytanks.entity.Actor;
-import com.angrytanks.entity.custom.tank.Tank;
 import com.angrytanks.util.Decomposable;
 import com.angrytanks.util.TankSelectionUtil;
+import com.angrytanks.ui.SceneManager;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -12,7 +12,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -27,15 +27,14 @@ public class InGameHud {
 
     private TankSelectionUtil tankSelectionUtil;
 
-    // -------------------------------------------
-    // ADDED: References for the health bar frames & fills
-    // -------------------------------------------
+    // SceneManager reference
+    private SceneManager sceneManager;
+
     private ImageView leftHBFrame;
     private ImageView rightHBFrame;
     private Rectangle leftHealthFill;
     private Rectangle rightHealthFill;
 
-    // ADDED: Track if we've already shown the modal
     private boolean gameOver = false;
 
     public InGameHud() {
@@ -45,7 +44,6 @@ public class InGameHud {
     }
 
     public void showGameHUD() {
-
         System.out.println("In gamehud: " + tankSelectionUtil.getPlayer1Tank() + " " + tankSelectionUtil.getPlayer2Tank());
         GameState.setupPlayers(
                 2,
@@ -75,74 +73,6 @@ public class InGameHud {
             hudPane.getChildren().add(actor.getVisuals());
         }
 
-        /*
-        Button getPosition = new Button("Get Position");
-        getPosition.setLayoutX(350);
-        getPosition.setLayoutY(10);
-        hudPane.getChildren().add(getPosition);
-        getPosition.setOnAction(e -> {
-            for (Tank tank : GameState.players) {
-                System.out.println(tank.getPosition());
-            }
-        });
-
-
-        Button randomPosition = new Button("Random Position ( Tanks )");
-        randomPosition.setLayoutX(350);
-        randomPosition.setLayoutY(40);
-        hudPane.getChildren().add(randomPosition);
-        randomPosition.setOnAction(e -> {
-            for (Tank tank : GameState.players) {
-                double randX = Math.random() * 800;
-                double randY = 50 + Math.random() * 400;
-                tank.teleport(randX, randY);
-            }
-        });
-
-        Button randomPositionAll = new Button("Random Position ( All )");
-        randomPositionAll.setLayoutX(350);
-        randomPositionAll.setLayoutY(100);
-        hudPane.getChildren().add(randomPositionAll);
-        randomPositionAll.setOnAction(e -> {
-            for (Actor actor : GameState.world.getAllActors()) {
-                double randX = Math.random() * 800;
-                double randY = 50 + Math.random() * 400;
-                actor.teleport(randX, randY);
-            }
-        });
-
-
-        Button getActors = new Button("Get Actors ");
-        getActors.setLayoutX(350);
-        getActors.setLayoutY(70);
-        hudPane.getChildren().add(getActors);
-        getActors.setOnAction(e -> {
-            for (Actor actor : GameState.world.getAllActors()) {
-                System.out.println(actor);
-            }
-        });
-        Button getStaticDecorations = new Button("Get Static elements ");
-        getStaticDecorations.setLayoutX(500);
-        getStaticDecorations.setLayoutY(130);
-        hudPane.getChildren().add(getStaticDecorations);
-        getStaticDecorations.setOnAction(e -> {
-            for (Actor actor : GameState.getMapLayout().getAllMapActors()) {
-                System.out.println(actor); // get all map bs elemets
-            }
-        });*/
-
-        //        Button showDecomposition = new Button("Show Decomposition");
-        //        showDecomposition.setLayoutX(350);
-        //        showDecomposition.setLayoutY(130);
-        //        hudPane.getChildren().add(showDecomposition);
-        //        showDecomposition.setOnAction(e -> {
-        //            for (Actor actor : GameState.world.getAllActors()) {
-        //                if (actor instanceof Landscape) {
-        //                    ((Landscape) actor).showDecompositionOutline();
-        //                }
-        //            }
-        //        });
-
         CheckBox showDecomposition = new CheckBox("Show Decomposition");
         showDecomposition.setLayoutX(350);
         showDecomposition.setLayoutY(130);
@@ -159,10 +89,7 @@ public class InGameHud {
             }
         });
 
-        // ------------------------------------------------------------------
-        // ADDED: Create the health bar frames & fill rectangles
-        // ------------------------------------------------------------------
-        // LEFT BAR
+        // Health Bars
         InputStream leftStream = getClass().getResourceAsStream("/com/angrytanks/images/HealthBarL.png");
         if (leftStream != null) {
             Image leftImg = new Image(leftStream);
@@ -185,7 +112,6 @@ public class InGameHud {
         leftHBGroup.setLayoutY(20);
         hudPane.getChildren().add(leftHBGroup);
 
-        // RIGHT BAR
         InputStream rightStream = getClass().getResourceAsStream("/com/angrytanks/images/HealthBarR.png");
         if (rightStream != null) {
             Image rightImg = new Image(rightStream);
@@ -194,7 +120,6 @@ public class InGameHud {
             rightHBFrame.setFitWidth(300);
             rightHBFrame.setLayoutX(0);
             rightHBFrame.setLayoutY(0);
-
         } else {
             System.err.println("Right health bar image not found!");
             rightHBFrame = new ImageView(); // fallback
@@ -206,7 +131,7 @@ public class InGameHud {
         rightHealthFill.setScaleX(-1);
 
         Group rightHBGroup = new Group(rightHealthFill, rightHBFrame);
-        rightHBGroup.setLayoutX(1920 - 300 - 20); // adjust as needed
+        rightHBGroup.setLayoutX(1920 - 300 - 20);
         rightHBGroup.setLayoutY(20);
         hudPane.getChildren().add(rightHBGroup);
     }
@@ -214,14 +139,11 @@ public class InGameHud {
     public void render() {
         for (Actor actor : GameState.world.getAllActors()) {
             if (!hudPane.getChildren().contains(actor.getVisuals())) {
-                hudPane.getChildren().add(actor.getVisuals()); // Ensure it's added
+                hudPane.getChildren().add(actor.getVisuals());
             }
             actor.render();
         }
 
-        // ------------------------------------------------------------------
-        // ADDED: Update the fill widths based on static player health
-        // ------------------------------------------------------------------
         double maxHealth = 100.0;
         double p1Width = (player1Health / maxHealth) * 255.0;
         double p2Width = (player2Health / maxHealth) * 255.0;
@@ -233,59 +155,61 @@ public class InGameHud {
             rightHealthFill.setWidth(p2Width);
         }
 
-        // ------------------------------------------------------------------
-        // ADDED: Check if someone has 0 health => Show "Player X won" modal
-        // ------------------------------------------------------------------
         if (!gameOver) {
             if (player1Health <= 0) {
-                showWinModal("Player 2 Won!");
+                showWinModal("PLAYER 2 WINS!");
                 gameOver = true;
             } else if (player2Health <= 0) {
-                showWinModal("Player 1 Won!");
+                showWinModal("PLAYER 1 WINS!");
                 gameOver = true;
             }
         }
     }
 
-    // ------------------------------------------------------------------
-    // ADDED: Simple "Game Over" modal
-    // ------------------------------------------------------------------
     private void showWinModal(String winnerText) {
-        // Create a semi-transparent overlay pane
         Pane modal = new Pane();
-        modal.setPrefSize(400, 200);
-        modal.setStyle("-fx-background-color: rgba(0,0,0,0.8);");
-        // Center the pane (roughly) in a 1920x1080 layout
-        modal.setLayoutX((1920 - 400) / 2.0);
-        modal.setLayoutY((1080 - 200) / 2.0);
+        modal.setPrefSize(600, 300);
+        modal.setStyle("-fx-background-color: rgba(0,0,0,0.3);");
+        modal.setLayoutX((1920 - 600) / 2.0);
+        modal.setLayoutY((1080 - 300) / 2.0);
 
-        // Label-like button just to display text
+        VBox contentBox = new VBox(30);
+        contentBox.setLayoutX(50);
+        contentBox.setLayoutY(50);
+
+        // Large retro label
         Button title = new Button(winnerText);
-        title.setDisable(true); // Not clickable
-        title.setStyle("-fx-text-fill: white; -fx-font-size: 20;");
-        title.setLayoutX(100);
-        title.setLayoutY(40);
+        title.setDisable(true);
+        title.getStyleClass().add("title-label");
 
-        // "Play Again" button
-        Button playAgainBtn = new Button("Play Again");
-        playAgainBtn.setLayoutX(50);
-        playAgainBtn.setLayoutY(120);
+        // "Play Again" -> go back to tank selection
+        Button playAgainBtn = new Button("PLAY AGAIN");
+        playAgainBtn.getStyleClass().add("menu-button");
         playAgainBtn.setOnAction(e -> {
-            // TODO: Reset game state or reload the scene
-            System.out.println("Play Again clicked!");
+            if (sceneManager != null) {
+                // Reset or reload as you wish; here we just go to tank selection
+                sceneManager.showTankSelection();
+            }
         });
 
-        // "Return to Menu" button
-        Button returnMenuBtn = new Button("Return to Menu");
-        returnMenuBtn.setLayoutX(200);
-        returnMenuBtn.setLayoutY(120);
+        // "Return to Menu"
+        Button returnMenuBtn = new Button("RETURN TO MENU");
+        returnMenuBtn.getStyleClass().add("menu-button");
         returnMenuBtn.setOnAction(e -> {
-            // TODO: Use your SceneManager here to go back to main menu
-            System.out.println("Return to Menu clicked!");
+            if (sceneManager != null) {
+                sceneManager.showMainMenu();
+            }
         });
 
-        modal.getChildren().addAll(title, playAgainBtn, returnMenuBtn);
+        contentBox.getChildren().addAll(title, playAgainBtn, returnMenuBtn);
+        modal.getChildren().add(contentBox);
+
         hudPane.getChildren().add(modal);
+    }
+
+    // Called by whatever loads this InGameHud to provide the scene manager
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
     }
 
     public Canvas getCanvas() {

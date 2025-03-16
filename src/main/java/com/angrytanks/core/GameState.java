@@ -27,10 +27,7 @@ public class GameState {
 
         mapLayout = new MapLayout();
 
-        mapLayout.loadFromSVG("/maps/test1.svg");
-
-
-
+        mapLayout.loadFromSVG("/maps/Desert.svg");
 
         for (var actor : mapLayout.getAllMapActors()) {
             world.addActor(actor);

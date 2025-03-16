@@ -3,6 +3,7 @@ package com.angrytanks.hud.custom.InGame;
 import com.angrytanks.core.GameState;
 import com.angrytanks.entity.custom.tank.Tank;
 import com.angrytanks.util.Decomposable;
+import com.angrytanks.util.TankSelectionUtil;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -18,6 +19,8 @@ public class InGameHud {
     private final Pane hudPane;
     private Canvas canvas;
 
+    private TankSelectionUtil tankSelectionUtil;
+
     public InGameHud() {
         this.hudPane = new Pane();
         canvas = new Canvas(800, 600);
@@ -26,9 +29,9 @@ public class InGameHud {
 
 
     public void showGameHUD() {
+
+        System.out.println("In gamehud: " + tankSelectionUtil.getPlayer1Tank() + " " + tankSelectionUtil.getPlayer2Tank());
         GameState.setupPlayers(2, "/tanks/tank2.svg", "/tanks/tankrus.svg");
-
-
 
         String bgFile = GameState.getMapLayout().getBackgroundName();
         if (bgFile != null && !bgFile.isEmpty()) {

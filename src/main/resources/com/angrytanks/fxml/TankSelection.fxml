@@ -20,21 +20,36 @@
                preserveRatio="false" />
 
     <AnchorPane>
+        <Button layoutX="350" layoutY="405" fx:id="leftTankPrev" onAction="#leftTankPrev" text="&#60;" styleClass="menu-button"/>
+
+
+        <ImageView fx:id="leftTankFrameInner"
+                   layoutX="470" layoutY="320"
+                   fitWidth="330" fitHeight="200"
+                   pickOnBounds="true" />
         <ImageView fx:id="leftTankFrame"
                    layoutX="450" layoutY="300"
                    fitWidth="360" fitHeight="244"
                    preserveRatio="false"
                    pickOnBounds="true" />
+        <Button layoutX="850" layoutY="405" fx:id="leftTankNext" onAction="#leftTankNext" text="&#62;" styleClass="menu-button"/>
+
         <VBox layoutX="500" layoutY="580" spacing="10" alignment="CENTER">
 
             <Label text="Enter Your Name:" />
             <TextField fx:id="nameField" prefWidth="200" />
         </VBox>
+        <Button layoutX="1100" layoutY="405" fx:id="rightTankPrev" onAction="#rightTankPrev" text="&#60;" styleClass="menu-button"/>
+        <ImageView fx:id="rightTankFrameInner"
+                   layoutX="1220" layoutY="320"
+                   fitWidth="330" fitHeight="200"
+                   pickOnBounds="true" />
         <ImageView fx:id="rightTankFrame"
                    layoutX="1200" layoutY="300"
                    fitWidth="360" fitHeight="244"
                    preserveRatio="false"
                    pickOnBounds="true" />
+        <Button layoutX="1600" layoutY="405" fx:id="rightTankNext" onAction="#rightTankNext" text="&#62;" styleClass="menu-button"/>
 
         <VBox layoutX="1250" layoutY="580" spacing="10" alignment="CENTER">
 

@@ -1,6 +1,8 @@
 package com.angrytanks.world;
 
 import com.angrytanks.entity.Actor;
+import javafx.scene.Group;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +31,6 @@ public class GameWorld {
     }
 
 
-
-
     public void update() {
         physicsWorld.update();
     }
@@ -45,5 +45,12 @@ public class GameWorld {
 
     public void removeActor(Actor actor) {
         actors.remove(actor);
+        if (actor.getVisuals().getParent() instanceof Group) {
+            ((Group) actor.getVisuals().getParent()).getChildren().remove(actor.getVisuals());
+        } else if (actor.getVisuals().getParent() instanceof Pane) {
+            ((Pane) actor.getVisuals().getParent()).getChildren().remove(actor.getVisuals());
+        }
     }
+
+
 }

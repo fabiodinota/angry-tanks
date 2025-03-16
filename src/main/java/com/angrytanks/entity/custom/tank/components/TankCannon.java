@@ -106,7 +106,7 @@ public class TankCannon extends Actor {
             float currentAngle = cannonBody.getAngle();
             float lowerLimit = (float) Math.toRadians(-45);
             if (currentAngle > lowerLimit) {
-                cannonJoint.setMotorSpeed(-1.5f);
+                cannonJoint.setMotorSpeed(-3f);
                 PauseTransition pause = new PauseTransition(Duration.millis(50));
                 pause.setOnFinished(e -> cannonJoint.setMotorSpeed(0.0f));
                 pause.play();
@@ -119,7 +119,7 @@ public class TankCannon extends Actor {
             float currentAngle = cannonBody.getAngle();
             float upperLimit = (float) Math.toRadians(20);
             if (currentAngle < upperLimit) {
-                cannonJoint.setMotorSpeed(1.5f);
+                cannonJoint.setMotorSpeed(3f);
                 PauseTransition pause = new PauseTransition(Duration.millis(50));
                 pause.setOnFinished(e -> cannonJoint.setMotorSpeed(0.0f));
                 pause.play();

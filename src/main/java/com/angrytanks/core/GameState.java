@@ -45,7 +45,7 @@ public class GameState {
             String resourcePath = (i == 0) ? tankAResource : tankBResource;
             TankData data = SVGTankLoader.loadTankData(resourcePath, true);
 
-            double spawnX = (i == 0) ? 900.0 : 1100.0;
+            double spawnX = (i == 0) ? 600.0 : 1150.0;
             double spawnY = 500.0;
             Tank tank = new Tank(data, spawnX, spawnY, (i == 1));
 

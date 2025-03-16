@@ -47,16 +47,12 @@ public class MyContactListener implements ContactListener {
             PhysicsWorld.scheduleAction(() -> handleHit(proj, ground));
         }
 
-        // -----------------------------------------------------------
-        // ADJUSTED HIT LOGIC: Projectile vs Tank
-        // -----------------------------------------------------------
+
         if (aA instanceof Projectile && aB instanceof Tank) {
             Projectile proj = (Projectile) aA;
             Tank hitTank = (Tank) aB;
 
-            // Only apply damage if the projectile's shooter is different from the tank it hit
             if (proj.getShooter() != hitTank) {
-                // If the shooter is "player1," we damage "player2" and vice versa
                 if (proj.getShooter() == GameState.players.get(0)) {
                     HealthBar.hitPlayer2(15);
                     checkHealth(hitTank, proj);
@@ -83,9 +79,7 @@ public class MyContactListener implements ContactListener {
     }
 
     public void checkHealth(Tank hitTank, Projectile proj) {
-        proj.physicsBody.getWorld().destroyBody(proj.physicsBody);
-        GameState.getWorld().removeActor(proj);
-        proj.physicsBody = null;
+        deleteProjectile(proj);
 
         if(HealthBar.getPlayer1Health() <= 0) {
             hitTank.detachTurret();
@@ -94,6 +88,15 @@ public class MyContactListener implements ContactListener {
         }
     }
 
+    public void deleteProjectile(Projectile proj){
+
+        if (proj.physicsBody != null && proj.physicsBody.isActive()) {
+            proj.physicsBody.getWorld().destroyBody(proj.physicsBody);
+            proj.physicsBody = null;
+        }
+        GameState.getWorld().removeActor(proj);
+
+    }
     @Override
     public void endContact(Contact contact) { }
 
@@ -105,6 +108,8 @@ public class MyContactListener implements ContactListener {
 
     private void handleHit(Projectile proj, Actor groundActor) {
         Point2D impact = proj.getPosition();
+
+        deleteProjectile(proj);
 
         if (proj.physicsBody != null && proj.physicsBody.isActive()) {
             proj.physicsBody.getWorld().destroyBody(proj.physicsBody);

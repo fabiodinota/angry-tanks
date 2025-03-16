@@ -132,4 +132,7 @@ public class TankTurret extends Actor {
     }
 
 
+    public Body getPhysicsBody() {
+        return turretBody;
+    }
 }

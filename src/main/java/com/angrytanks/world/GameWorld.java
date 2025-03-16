@@ -42,4 +42,8 @@ public class GameWorld {
     public List<Actor> getAllActors() {
         return actors;
     }
+
+    public void removeActor(Actor actor) {
+        actors.remove(actor);
+    }
 }

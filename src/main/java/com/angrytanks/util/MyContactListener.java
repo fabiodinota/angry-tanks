@@ -1,11 +1,15 @@
 package com.angrytanks.util;
 
+import com.angrytanks.core.GameState;
 import com.angrytanks.entity.Actor;
 import com.angrytanks.entity.custom.Projectile;
 import com.angrytanks.entity.custom.tank.Tank;
+import com.angrytanks.hud.custom.InGame.HealthBar;
 import com.angrytanks.terrain.DestructibleTerrain;
+import com.angrytanks.ui.SceneManager;
 import com.angrytanks.world.PhysicsWorld;
 import javafx.geometry.Point2D;
+import javafx.scene.Scene;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -32,8 +36,7 @@ public class MyContactListener implements ContactListener {
         boolean isTerrainA = (aA instanceof DestructibleTerrain);
         boolean isTerrainB = (aB instanceof DestructibleTerrain);
 
-
-
+        // Projectile vs Terrain
         if (isProjA && isTerrainB) {
             Projectile proj = (Projectile) aA;
             Actor ground = aB;
@@ -44,34 +47,61 @@ public class MyContactListener implements ContactListener {
             PhysicsWorld.scheduleAction(() -> handleHit(proj, ground));
         }
 
+        // -----------------------------------------------------------
+        // ADJUSTED HIT LOGIC: Projectile vs Tank
+        // -----------------------------------------------------------
         if (aA instanceof Projectile && aB instanceof Tank) {
-            System.out.println("Projectile from " + aA +
-                    " hit enemy tank " + aB);
-
             Projectile proj = (Projectile) aA;
             Tank hitTank = (Tank) aB;
-            if (proj.getShooter() != hitTank) {
-                System.out.println("Projectile from " + proj.getShooter() +
-                        " hit enemy tank " + hitTank);
 
+            // Only apply damage if the projectile's shooter is different from the tank it hit
+            if (proj.getShooter() != hitTank) {
+                // If the shooter is "player1," we damage "player2" and vice versa
+                if (proj.getShooter() == GameState.players.get(0)) {
+                    HealthBar.hitPlayer2(15);
+                    checkHealth(hitTank, proj);
+                } else {
+                    HealthBar.hitPlayer1(15);
+                    checkHealth(hitTank, proj);
+                }
             }
+
         } else if (aB instanceof Projectile && aA instanceof Tank) {
             Projectile proj = (Projectile) aB;
             Tank hitTank = (Tank) aA;
+
             if (proj.getShooter() != hitTank) {
-                System.out.println("Projectile from " + proj.getShooter() +
-                        " hit enemy tank " + hitTank);
+                if (proj.getShooter() == GameState.players.get(0)) {
+                    HealthBar.hitPlayer2(15);
+                    checkHealth(hitTank, proj);
+                } else {
+                    HealthBar.hitPlayer1(15);
+                    checkHealth(hitTank, proj);
+                }
             }
         }
-
-
     }
 
-    @Override public void endContact(Contact contact) { }
+    public void checkHealth(Tank hitTank, Projectile proj) {
+        proj.physicsBody.getWorld().destroyBody(proj.physicsBody);
+        GameState.getWorld().removeActor(proj);
+        proj.physicsBody = null;
 
-    @Override public void preSolve(Contact contact, Manifold oldManifold) { }
+        if(HealthBar.getPlayer1Health() <= 0) {
+            hitTank.detachTurret();
+        } else if(HealthBar.getPlayer2Health() <= 0) {
+            hitTank.detachTurret();
+        }
+    }
 
-    @Override public void postSolve(Contact contact, ContactImpulse impulse) { }
+    @Override
+    public void endContact(Contact contact) { }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) { }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) { }
 
     private void handleHit(Projectile proj, Actor groundActor) {
         Point2D impact = proj.getPosition();
@@ -81,16 +111,11 @@ public class MyContactListener implements ContactListener {
             proj.physicsBody = null;
         }
 
-
-
         if (groundActor instanceof DestructibleTerrain) {
             DestructibleTerrain terrain = (DestructibleTerrain) groundActor;
             CraterParameters params = terrain.getCraterParameters();
 
-
-            List<List<Point2D>> updatedParts = new ArrayList<>();
-
-            var newPolys = DestructionHelper.subtractEllipseFromPolygon(
+            List<List<Point2D>> newPolys = DestructionHelper.subtractEllipseFromPolygon(
                     terrain.getVertices(), impact,
                     params.getRadiusX(), params.getRadiusY(),
                     params.getRotation(), params.getEllipseVertices());
@@ -100,12 +125,8 @@ public class MyContactListener implements ContactListener {
                 World world = PhysicsWorld.getPhysicsWorld();
                 if (world != null) {
                     terrain.rebuild(world);
-                } else {
                 }
-            } else {
-                System.out.println("1");
             }
-        } else {
         }
     }
 

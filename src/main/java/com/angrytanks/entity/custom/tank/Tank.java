@@ -292,7 +292,20 @@ public class Tank extends Actor implements Decomposable {
         return new HullBounds(minX, maxX);
     }
 
-
+    public void detachTurret() {
+        if (turret != null) {
+            tankGroup.getChildren().remove(turret.getVisuals());
+            Body turretPhysicsBody = turret.getPhysicsBody();
+            if (turretPhysicsBody != null) {
+                World world = PhysicsWorld.getPhysicsWorld();
+                if (world != null) {
+                    world.destroyBody(turretPhysicsBody);
+                }
+            }
+            turret = null;
+            System.out.println("Turret detached and removed.");
+        }
+    }
     public TankTurret getTurret() {
         return turret;
     }

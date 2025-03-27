@@ -2,6 +2,7 @@ package com.angrytanks.ui.controllers;
 
 import com.angrytanks.ui.SceneManager;
 import com.angrytanks.util.BackgroundUtils;
+import com.angrytanks.util.GameOverUtil;
 import com.angrytanks.util.TankSelectionUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -62,6 +63,10 @@ public class TankSelectionController {
 
         if (sceneManager != null && !leftName.isEmpty() && !rightName.isEmpty()) {
             sceneManager.showGameScene();
+            GameOverUtil.setPlayer1(leftName);
+            System.out.println("Tank Sel name left: " + leftName);
+            GameOverUtil.setPlayer2(rightName);
+            System.out.println("Tank Sel name right: " + rightName);
         } else {
             System.out.println("Please enter names for both tanks!");
         }

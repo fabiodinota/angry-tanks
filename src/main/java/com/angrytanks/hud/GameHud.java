@@ -2,10 +2,10 @@ package com.angrytanks.hud;
 
 import com.angrytanks.core.GameEngine;
 import com.angrytanks.hud.custom.InGame.InGameHud;
+import com.angrytanks.ui.SceneManager;
 import javafx.scene.layout.Pane;
 
 public class GameHud {
-
     private final GameEngine engine;
     private final Pane rootPane;
     private InGameHud inGameHud;
@@ -19,6 +19,7 @@ public class GameHud {
         inGameHud = new InGameHud();
         rootPane.getChildren().clear();
         rootPane.getChildren().add(inGameHud.getHudPane());
+
 
         inGameHud.showGameHUD();
     }

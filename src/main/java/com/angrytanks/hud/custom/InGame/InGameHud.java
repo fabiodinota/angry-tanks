@@ -3,6 +3,7 @@ package com.angrytanks.hud.custom.InGame;
 import com.angrytanks.core.GameState;
 import com.angrytanks.entity.Actor;
 import com.angrytanks.util.Decomposable;
+import com.angrytanks.util.GameOverUtil;
 import com.angrytanks.util.TankSelectionUtil;
 import com.angrytanks.ui.SceneManager;
 import javafx.scene.Group;
@@ -34,9 +35,6 @@ public class InGameHud {
     private ImageView rightHBFrame;
     private Rectangle leftHealthFill;
     private Rectangle rightHealthFill;
-
-    private boolean gameOver = false;
-
     public InGameHud() {
         this.hudPane = new Pane();
         canvas = new Canvas(1920, 1080);
@@ -154,63 +152,10 @@ public class InGameHud {
         if (rightHealthFill != null) {
             rightHealthFill.setWidth(p2Width);
         }
-
-        if (!gameOver) {
-            if (player1Health <= 0) {
-                showWinModal("PLAYER 2 WINS!");
-                gameOver = true;
-            } else if (player2Health <= 0) {
-                showWinModal("PLAYER 1 WINS!");
-                gameOver = true;
-            }
-        }
     }
 
-    private void showWinModal(String winnerText) {
-        Pane modal = new Pane();
-        modal.setPrefSize(600, 300);
-        modal.setStyle("-fx-background-color: rgba(0,0,0,0.3);");
-        modal.setLayoutX((1920 - 600) / 2.0);
-        modal.setLayoutY((1080 - 300) / 2.0);
 
-        VBox contentBox = new VBox(30);
-        contentBox.setLayoutX(50);
-        contentBox.setLayoutY(50);
 
-        // Large retro label
-        Button title = new Button(winnerText);
-        title.setDisable(true);
-        title.getStyleClass().add("title-label");
-
-        // "Play Again" -> go back to tank selection
-        Button playAgainBtn = new Button("PLAY AGAIN");
-        playAgainBtn.getStyleClass().add("menu-button");
-        playAgainBtn.setOnAction(e -> {
-            if (sceneManager != null) {
-                // Reset or reload as you wish; here we just go to tank selection
-                sceneManager.showTankSelection();
-            }
-        });
-
-        // "Return to Menu"
-        Button returnMenuBtn = new Button("RETURN TO MENU");
-        returnMenuBtn.getStyleClass().add("menu-button");
-        returnMenuBtn.setOnAction(e -> {
-            if (sceneManager != null) {
-                sceneManager.showMainMenu();
-            }
-        });
-
-        contentBox.getChildren().addAll(title, playAgainBtn, returnMenuBtn);
-        modal.getChildren().add(contentBox);
-
-        hudPane.getChildren().add(modal);
-    }
-
-    // Called by whatever loads this InGameHud to provide the scene manager
-    public void setSceneManager(SceneManager sceneManager) {
-        this.sceneManager = sceneManager;
-    }
 
     public Canvas getCanvas() {
         return canvas;

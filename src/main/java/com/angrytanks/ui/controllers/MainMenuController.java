@@ -123,12 +123,20 @@ public class MainMenuController {
 
     @FXML
     private void onShopClicked() {
-        System.out.println("Shop clicked!");
+        if (sceneManager != null) {
+            sceneManager.showShop();
+        } else {
+            System.out.println("SceneManager not set in MainMenuController!");
+        }
     }
 
     @FXML
     private void onLeaderboardClicked() {
-        System.out.println("Leaderboard clicked!");
+        if (sceneManager != null) {
+            sceneManager.showLeaderboard();
+        } else {
+            System.out.println("SceneManager not set in MainMenuController!");
+        }
     }
 
     @FXML

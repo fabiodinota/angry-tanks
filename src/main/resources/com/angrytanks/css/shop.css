@@ -1,0 +1,44 @@
+.root {
+    -fx-background-color: #1e1e1e;
+}
+
+.label {
+    -fx-font-family: "Press Start 2P";
+    -fx-text-fill: #ffffff;
+}
+
+.title-label {
+    -fx-font-size: 48px;
+    -fx-text-fill: #ffcc00;
+}
+
+.button {
+    -fx-font-family: "Press Start 2P";
+    -fx-font-size: 14px;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #444444;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px 20px;
+}
+
+.hbox-item {
+    -fx-background-color: #333333;
+    -fx-padding: 10;
+    -fx-spacing: 20;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+}
+
+.image-view {
+    -fx-fit-width: 100;
+    -fx-fit-height: 100;
+    -fx-preserve-ratio: true;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #1e1e1e;
+}

@@ -6,6 +6,7 @@ import com.angrytanks.entity.custom.tank.Tank;
 import com.angrytanks.entity.custom.tank.TankController;
 import com.angrytanks.core.InputActions;
 import com.angrytanks.ui.SceneManager;
+import com.angrytanks.util.GameOverUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -19,22 +20,10 @@ public class GameUIController {
     @FXML
     private AnchorPane gameContainer;
 
-    private SceneManager sceneManager;
     private GameEngine gameEngine;
 
-    @FXML
-    private void onEndGameClicked() {
-        if (sceneManager != null) {
-            sceneManager.showWinLoseScene();
-        }
-        if (gameEngine != null) {
-            gameEngine.stopGame();
-        }
-    }
+    private SceneManager sceneManager;
 
-    public void setSceneManager(SceneManager sceneManager) {
-        this.sceneManager = sceneManager;
-    }
 
     public void startEngine() {
         gameEngine = new GameEngine();
@@ -52,5 +41,16 @@ public class GameUIController {
                 System.out.println("No player tanks found.");
             }
         }
+
+        GameOverUtil.addListener(() -> {
+            System.out.println("Game over.");
+            if (sceneManager != null) {
+                sceneManager.showWinLoseScene();
+            }
+        });
+    }
+
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
     }
 }

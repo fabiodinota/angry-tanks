@@ -20,6 +20,9 @@ import org.jbox2d.dynamics.World;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.angrytanks.hud.custom.InGame.HealthBar.player1Health;
+import static com.angrytanks.hud.custom.InGame.HealthBar.player2Health;
+
 public class MyContactListener implements ContactListener {
 
     @Override
@@ -54,10 +57,10 @@ public class MyContactListener implements ContactListener {
 
             if (proj.getShooter() != hitTank) {
                 if (proj.getShooter() == GameState.players.get(0)) {
-                    HealthBar.hitPlayer2(15);
+                    HealthBar.hitPlayer2(25);
                     checkHealth(hitTank, proj);
                 } else {
-                    HealthBar.hitPlayer1(15);
+                    HealthBar.hitPlayer1(25);
                     checkHealth(hitTank, proj);
                 }
             }
@@ -68,10 +71,10 @@ public class MyContactListener implements ContactListener {
 
             if (proj.getShooter() != hitTank) {
                 if (proj.getShooter() == GameState.players.get(0)) {
-                    HealthBar.hitPlayer2(15);
+                    HealthBar.hitPlayer2(25);
                     checkHealth(hitTank, proj);
                 } else {
-                    HealthBar.hitPlayer1(15);
+                    HealthBar.hitPlayer1(25);
                     checkHealth(hitTank, proj);
                 }
             }
@@ -80,11 +83,19 @@ public class MyContactListener implements ContactListener {
 
     public void checkHealth(Tank hitTank, Projectile proj) {
         deleteProjectile(proj);
+        String player1 = GameOverUtil.getPlayer1();
+        String player2 = GameOverUtil.getPlayer2();
 
-        if(HealthBar.getPlayer1Health() <= 0) {
+        System.out.println("names" + player1 + player2);
+
+        if(HealthBar.getPlayer1Health() <= 0 && !GameOverUtil.isGameOver()) {
             hitTank.detachTurret();
-        } else if(HealthBar.getPlayer2Health() <= 0) {
+            GameOverUtil.setPlayerWon(player2);
+            GameOverUtil.setGameOver(true);
+        } else if(HealthBar.getPlayer2Health() <= 0 && !GameOverUtil.isGameOver()) {
             hitTank.detachTurret();
+            GameOverUtil.setPlayerWon(player1);
+            GameOverUtil.setGameOver(true);
         }
     }
 

@@ -4,8 +4,11 @@ module com.example.angrytanks {
     requires jbox2d.library;
     requires java.desktop;
     requires org.locationtech.jts;
+    requires java.sql;
+    requires org.postgresql.jdbc;
 
+    opens com.angrytanks.ui.controllers to javafx.fxml, javafx.base;
 
-    opens com.angrytanks.ui.controllers to javafx.fxml;
+    exports com.angrytanks.ui.controllers;
     exports com.angrytanks;
 }

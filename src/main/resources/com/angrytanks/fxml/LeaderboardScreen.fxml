@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.angrytanks.ui.controllers.LeaderboardController"
+            prefWidth="1980" prefHeight="1080">
+    <!-- Header Label -->
+    <Label text="Leaderboard" layoutX="50" layoutY="20" styleClass="title-label"/>
+
+    <!-- Back Button -->
+    <Button text="Back" layoutX="50" layoutY="80" onAction="#onBack" styleClass="button"/>
+
+    <!-- TableView for leaderboard data -->
+    <TableView fx:id="leaderboardTable" layoutX="50" layoutY="140" prefWidth="1880" prefHeight="900">
+        <columns>
+            <TableColumn fx:id="rankColumn" text="Rank" prefWidth="100"/>
+            <TableColumn fx:id="usernameColumn" text="Username" prefWidth="300"/>
+            <TableColumn fx:id="scoreColumn" text="Score" prefWidth="200"/>
+            <TableColumn fx:id="winsColumn" text="Wins" prefWidth="100"/>
+            <TableColumn fx:id="lossesColumn" text="Losses" prefWidth="100"/>
+            <TableColumn fx:id="trophiesColumn" text="Trophies" prefWidth="100"/>
+        </columns>
+    </TableView>
+</AnchorPane>

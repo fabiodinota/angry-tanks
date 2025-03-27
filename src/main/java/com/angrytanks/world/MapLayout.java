@@ -54,21 +54,21 @@ public class MapLayout {
             if (type != null && type.contains("ground")) {
 
                 DestructibleTerrain ground = DecorationFactory.createDestructible("ground",
-                        verts.getFirst().getX(), verts.get(0).getY(), verts, fill);
+                        verts.getFirst().getX(), verts.getFirst().getY(), verts, fill);
                 addGroundSegment((Landscape) ground);
             } else if (type != null && type.contains("grass")) {
 
                 DestructibleTerrain grass = DecorationFactory.createDestructible("grass",
-                        verts.get(0).getX(), verts.get(0).getY(), verts, fill);
+                        verts.getFirst().getX(), verts.getFirst().getY(), verts, fill);
                 addDynamicDecoration(grass);
             } else if (type != null && type.contains("sand")) {
 
                 DestructibleTerrain sand = DecorationFactory.createDestructible("sand",
-                        verts.get(0).getX(), verts.get(0).getY(), verts, fill);
+                        verts.getFirst().getX(), verts.getFirst().getY(), verts, fill);
                 addDynamicDecoration(sand);
             } else if (type != null && type.contains("decor")) {
                 Decoration decor = DecorationFactory.createDecoration("decor",
-                        verts.get(0).getX(), verts.get(0).getY(), verts, fill);
+                        verts.getFirst().getX(), verts.getFirst().getY(), verts, fill);
                 addStaticDecoration(decor);
             } else {
                 System.out.println("???: " + type);

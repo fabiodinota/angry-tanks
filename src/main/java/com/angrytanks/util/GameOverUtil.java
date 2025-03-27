@@ -1,5 +1,6 @@
 package com.angrytanks.util;
 
+import com.angrytanks.hud.custom.InGame.HealthBar;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -25,6 +26,8 @@ public class GameOverUtil {
             gameOver = value;
             if (gameOver) {
                 notifyListeners();
+                HealthBar.setPlayer1Health(100);
+                HealthBar.setPlayer2Health(100);
             }
         }
     }

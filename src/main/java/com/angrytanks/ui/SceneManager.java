@@ -123,6 +123,7 @@ public class SceneManager {
     public void showWinLoseScene() {
         primaryStage.setTitle("Angry Tanks - Results");
         primaryStage.setScene(winLoseScene);
+
         primaryStage.show();
     }
 }

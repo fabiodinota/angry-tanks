@@ -8,6 +8,7 @@
     -fx-font-family: "Press Start 2P";
     -fx-font-size: 16px;
     -fx-text-fill: #ffffff; /* White text */
+    -fx-text-alignment: center;
 }
 
 /* Prominent title styling */

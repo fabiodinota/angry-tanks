@@ -10,7 +10,6 @@ import java.util.List;
 
 public class GameOverUtil {
     public static boolean gameOver = false;
-    // Use a JavaFX property for playerWon
     private static final StringProperty playerWonProperty = new SimpleStringProperty("");
     public static String player1 = "";
     public static String player2 = "";

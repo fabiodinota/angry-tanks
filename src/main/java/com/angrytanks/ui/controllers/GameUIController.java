@@ -46,6 +46,7 @@ public class GameUIController {
             System.out.println("Game over.");
             if (sceneManager != null) {
                 sceneManager.showWinLoseScene();
+                GameState.getWorld().clearActors();
             }
         });
     }

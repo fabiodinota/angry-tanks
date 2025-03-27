@@ -26,8 +26,7 @@ public class GameOverUtil {
             gameOver = value;
             if (gameOver) {
                 notifyListeners();
-                HealthBar.setPlayer1Health(100);
-                HealthBar.setPlayer2Health(100);
+                HealthBar.resetHealth();
             }
         }
     }

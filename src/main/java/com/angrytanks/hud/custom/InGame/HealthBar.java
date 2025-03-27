@@ -32,4 +32,9 @@ public class HealthBar {
     public static void setPlayer2Health(int health) {
         player2Health = Math.max(0, health);
     }
+
+    public static void resetHealth() {
+        player1Health = 100;
+        player2Health = 100;
+    }
 }

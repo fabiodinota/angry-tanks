@@ -44,6 +44,7 @@ public class WinLoseController {
     private void onMainMenu() {
         if (sceneManager != null) {
             sceneManager.showMainMenu();
+            GameOverUtil.setGameOver(false);
         }
     }
 

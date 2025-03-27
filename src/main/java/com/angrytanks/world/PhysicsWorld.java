@@ -38,4 +38,8 @@ public class PhysicsWorld {
     public Vec2 getGravity() {
         return physicsWorld.getGravity();
     }
+
+    public void SetGravity(Vec2 vec2) {
+        physicsWorld.setGravity(new Vec2(vec2.x, vec2.y));
+    }
 }

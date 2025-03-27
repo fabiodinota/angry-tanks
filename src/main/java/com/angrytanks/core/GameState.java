@@ -21,10 +21,11 @@ public class GameState {
     private static int currentPlayerIndex;
 
     public static void initialize() {
-        if (world == null) {
-            world = new GameWorld();
-        }
+        if (world != null) {
+            world.clearActors();
 
+        }
+        world = new GameWorld();
         mapLayout = new MapLayout();
 
         mapLayout.loadFromSVG("/maps/Desert.svg");
@@ -105,8 +106,8 @@ public class GameState {
         } else {
             currentPlayerIndex = 0;
         }
-
-
     }
+
+
 
 }

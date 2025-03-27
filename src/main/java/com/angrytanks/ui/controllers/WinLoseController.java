@@ -28,10 +28,8 @@ public class WinLoseController {
     @FXML
     private void initialize() {
         BackgroundUtils.setupBackground(stackPane, backgroundImage, "/com/angrytanks/images/bg2.png");
-        // Bind the title label so it automatically updates when playerWon changes.
         titleLabel.textProperty().bind(Bindings.concat("Player ", GameOverUtil.playerWonProperty(), " won!"));
 
-        // Optionally, set or update your message label here.
         messageLabel.setText("Congratulations! You have defeated the enemy!");
     }
 

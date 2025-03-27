@@ -25,8 +25,8 @@ public class TankSelectionController {
     @FXML private Button leftTankPrev;
     @FXML private Button rightTankNext;
     @FXML private Button rightTankPrev;
-    @FXML private TextField nameField;   // Left tank name
-    @FXML private TextField nameField2;  // Right tank name
+    @FXML private TextField nameField;
+    @FXML private TextField nameField2;
 
     private TankSelectionUtil tankSelectionUtil;
 
@@ -79,7 +79,7 @@ public class TankSelectionController {
         }
     }
 
-    // --- Tank Navigation ---
+
 
     @FXML
     private void leftTankNext() {

@@ -26,6 +26,13 @@ public class GameUIController {
 
 
     public void startEngine() {
+
+        if(gameEngine != null && gameEngine.isRunning())  {
+            gameEngine.stopGame();
+
+        }
+
+
         gameEngine = new GameEngine();
         gameEngine.startGame(gameContainer);
 

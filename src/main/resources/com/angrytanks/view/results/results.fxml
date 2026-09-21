@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.angrytanks.view.fx.screen.FxResultsView"
+           prefWidth="1920" prefHeight="1080"
+           fx:id="stackPane">
+
+    <ImageView fx:id="backgroundImage"
+               fitWidth="1920"
+               fitHeight="1080"
+               preserveRatio="false" />
+
+
+    <VBox alignment="CENTER" spacing="20">
+
+        <Label fx:id="titleLabel" text="You Win!" styleClass="title-label" />
+
+
+        <Label fx:id="messageLabel" text="Congratulations! You have defeated the enemy!" styleClass="label" wrapText="true" maxWidth="600"/>
+
+
+        <VBox alignment="CENTER" spacing="10">
+            <Button text="Main Menu" onAction="#onMainMenu" styleClass="button" />
+        </VBox>
+    </VBox>
+
+
+    <padding>
+        <Insets top="50" right="50" bottom="50" left="50"/>
+    </padding>
+</StackPane>
